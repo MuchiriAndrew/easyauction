@@ -10,4 +10,13 @@ class PagesController extends Controller
     {
         return view('pages.home');
     }
+
+
+    public function single_view() {
+        return view('pages.single-view');
+    }
+    
+    public function listings() {
+        return view('pages.listings');
+    }
 }

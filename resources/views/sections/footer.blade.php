@@ -3,36 +3,35 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="about-us">
-                    <img src="assets/images/logo-2.png" alt="">
-                    <p>Maecenas ne mollis orci. Phasell iacu sapie non aliquet ex euismo ac.</p>
-                    <ul>
+                    <img src="assets/images/EASYAUCTION.png" alt="">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt facilis assumenda suscipit quo provident recusandae, nam harum voluptates illum! Doloremque dignissimos, dolores hic culpa expedita reiciendis molestias molestiae inventore quo.</p>
+                    {{-- <ul>
                         <li><i class="fa fa-map-marker"></i>Raver Croft Drive Knoxville, 37921</li>
                         <li><i class="fa fa-phone"></i>+55 417-634-7071</li>
                         <li><i class="fa fa-envelope-o"></i>contact@auction.com</li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="featured-links">
                     <h4>Featured Links</h4>
                     <ul>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>About Us</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Term &amp; Services</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Meet The Team</a></li>
+                        <li><a href="/listings"><i class="fa fa-caret-right"></i>Listings</a></li>
+                        <li><a href="#"><i class="fa fa-caret-right"></i>Terms &amp; Conditions</a></li>
+                        <li><a href="#"><i class="fa fa-caret-right"></i>Contact</a></li>
+                        {{-- <li><a href="#"><i class="fa fa-caret-right"></i>Meet The Team</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Privacy Policy</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Company News</a></li>
+                        <li><a href="#"><i class="fa fa-caret-right"></i>Company News</a></li> --}}
                     </ul>
-                    <ul>
+                    {{-- <ul>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Shop</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>New Vehicle</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Features</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Promotions</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Contact</a></li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
-            <div class="col-md-3">
+            {{-- <div class="col-md-3">
                 <div class="latest-news">
                     <h4>Latest News</h4>
                     <div class="latest-item">
@@ -56,8 +55,8 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
+            </div> --}}
+            {{-- <div class="col-md-3">
                 <div class="gallery">
                     <h4>Gallery</h4>
                     <div class="gallery-item">
@@ -85,12 +84,12 @@
                         <img src="http://dummyimage.com/60x60/cccccc/fff.jpg" alt="">
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </footer>
 
-<div id="sub-footer">
+{{-- <div id="sub-footer">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-12">
@@ -108,4 +107,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

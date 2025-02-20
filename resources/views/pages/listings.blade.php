@@ -29,7 +29,7 @@
             <div id="listing-cars" class="col-md-9">
                 <div class="pre-featured clearfix">
                     <div class="info-text">
-                        <h4>24 results founded</h4>
+                        <h4>24 results found</h4>
                     </div>
                     <div class="right-content">
                         <div class="input-select">
@@ -41,12 +41,12 @@
                                   <option>Near</option>
                             </select>
                         </div>
-                        <div class="grid-list">
+                        {{-- <div class="grid-list">
                             <ul>
                                 <li><a href="#"><i class="fa fa-list"></i></a></li>
                                 <li><a href="#"><i class="fa fa-square"></i></a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div id="featured-cars">
@@ -101,28 +101,28 @@
                         <div class="select">
                             <select name="mark" id="make">
                                 <option value="-1">Select Makes</option>
-                                  <option>Price</option>
-                                  <option>Miles</option>
-                                  <option>Year</option>
-                                  <option>Near</option>
+                                <option>Jeep</option>
+                                <option>Toyota</option>
+                                <option>Mazda</option>
+                                <option>Audi</option>
                             </select>
                         </div>
                         <div class="select">
                             <select name="mark" id="model">
                                 <option value="-1">Select Car Model</option>
-                                  <option>Price</option>
-                                  <option>Miles</option>
-                                  <option>Year</option>
-                                  <option>Near</option>
+                                  <option>Axela</option>
+                                  <option>Atenza</option>
+                                  <option>CX-5</option>
+                                  <option>CX-3</option>
                             </select>
                         </div>
                         <div class="select">
                             <select name="mark" id="style">
                                 <option value="-1">Select Style</option>
-                                  <option>Price</option>
-                                  <option>Miles</option>
-                                  <option>Year</option>
-                                  <option>Near</option>
+                                  <option>Station Wagon</option>
+                                  <option>Saloon</option>
+                                  <option>SUV</option>
+                                  <option>Coupe</option>
                             </select>
                         </div>
                         <div class="slider-range">
@@ -131,22 +131,22 @@
                             </p>
                             <div id="slider-range"></div>
                         </div>
-                        <div class="select">
+                        {{-- <div class="select">
                             <select name="mark" id="types">
                                 <option value="-1">Select Car Types</option>
-                                  <option>Price</option>
-                                  <option>Miles</option>
-                                  <option>Year</option>
-                                  <option>Near</option>
+                                  <option>Jeep</option>
+                                  <option>Toyota</option>
+                                  <option>Mazda</option>
+                                  <option>Audi</option>
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="select">
                             <select name="mark" id="color">
                                 <option value="-1">Select Color</option>
-                                  <option>Price</option>
-                                  <option>Miles</option>
-                                  <option>Year</option>
-                                  <option>Near</option>
+                                  <option>Black</option>
+                                  <option>Red</option>
+                                  <option>Blue</option>
+                                  <option>Silver</option>
                             </select>
                         </div>
                         <div class="advanced-button">
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="video-post">
+                <div class="video-post hidden">
                     <div class="video-holder">
                         <img src="http://dummyimage.com/270x170/cccccc/fff.jpg" alt="">
                         <div class="video-content">
@@ -169,7 +169,7 @@
 </section>
 
 
-@include('partials.cta-2')
+{{-- @include('partials.cta-2') --}}
 
 
 @endsection

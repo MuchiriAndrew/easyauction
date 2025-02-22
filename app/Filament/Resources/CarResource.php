@@ -26,6 +26,59 @@ class CarResource extends Resource
                 Forms\Components\TextInput::make('model')
                     ->required()
                     ->label('Model'),
+                //add a form for car style: saloon, suv , etc  
+                Forms\Components\Select::make('style')
+                    ->options([
+                        'saloon' => 'Saloon',
+                        'suv' => 'SUV',
+                        'hatchback' => 'Hatchback',
+                        'coupe' => 'Coupe',
+                        'convertible' => 'Convertible',
+                        'estate' => 'Estate',
+                        'mpv' => 'MPV',
+                        'pickup' => 'Pickup',
+                        'van' => 'Van',
+                        'minibus' => 'Minibus',
+                        'campervan' => 'Campervan',
+                        'limousine' => 'Limousine',
+                        'other' => 'Other',
+                    ])
+                    ->label('Style'),
+                //add a form for car transmission: automatic, manual, etc
+                Forms\Components\Select::make('transmission')
+                    ->options([
+                        'automatic' => 'Automatic',
+                        'manual' => 'Manual',
+                    ])
+                    ->label('Transmission'),
+                //add a form for car fuel type: petrol, diesel, etc
+                Forms\Components\Select::make('fuel_type')
+                    ->options([
+                        'petrol' => 'Petrol',
+                        'diesel' => 'Diesel',
+                        'electric' => 'Electric',
+                        'hybrid' => 'Hybrid',
+                        'other' => 'Other',
+                    ])
+                    ->label('Fuel Type'),
+                //add a form for car color: red, blue, etc
+                Forms\Components\Select::make('color')
+                    ->options([
+                        'red' => 'Red',
+                        'blue' => 'Blue',
+                        'green' => 'Green',
+                        'yellow' => 'Yellow',
+                        'black' => 'Black',
+                        'white' => 'White',
+                        'silver' => 'Silver',
+                        'grey' => 'Grey',
+                        'brown' => 'Brown',
+                        'orange' => 'Orange',
+                        'purple' => 'Purple',
+                        'pink' => 'Pink',
+                        'other' => 'Other',
+                    ])
+                    ->label('Color'),
                 Forms\Components\TextInput::make('year')
                     ->numeric()
                     ->required()
@@ -95,6 +148,7 @@ class CarResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -114,6 +168,7 @@ class CarResource extends Resource
             'index' => Pages\ListCars::route('/'),
             'create' => Pages\CreateCar::route('/create'),
             'edit' => Pages\EditCar::route('/{record}/edit'),
+            'show' => Pages\ShowCar::route('/{record}'),
         ];
     }
 }

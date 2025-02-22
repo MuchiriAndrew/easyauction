@@ -33,13 +33,29 @@ class UserResource extends Resource
                     ->label('Password')
                     ->dehydrateStateUsing(fn($state) => bcrypt($state))
                     ->required(fn($record) => $record === null), // Required on create, optional on edit
-                Forms\Components\Select::make('role')
-                    ->options([
-                        'admin' => 'Admin',
-                        'vendor' => 'Vendor',
-                        'bidder' => 'Bidder',
-                    ])
-                    ->label('Role'),
+
+                // Forms\Components\Select::make('role')
+                //     ->options([
+                //         'admin' => 'Admin',
+                //         'vendor' => 'Vendor',
+                //         'bidder' => 'Customer',
+                //     ])
+                //     ->label('Role'),
+                Forms\Components\Select::make('roles')
+                        ->relationship('roles', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable(),
+                    // ->options([
+                    //     'admin' => 'Admin',
+                    //     'vendor' => 'Vendor',
+                    //     'bidder' => 'Bidder',
+                    // ])
+                    // ->label('Role'),
+
+                // Forms\Components\CheckboxList::make('roles')
+                //     ->relationship('roles', 'name')
+                //     ->searchable()
             ]);
     }
 
@@ -49,13 +65,14 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Name'),
                 Tables\Columns\TextColumn::make('email')->label('Email'),
-                Tables\Columns\BadgeColumn::make('role')
-                    ->label('Role')
+                Tables\Columns\BadgeColumn::make('roles.name')
+                    ->label('User Roles')
                     ->colors([
-                        'success' => 'admin',
-                        'primary' => 'vendor',
-                        'secondary' => 'bidder',
+                        'danger' => 'Super Admin',
+                        'warning' => 'Vendor',
+                        'success' => 'Customer',
                     ]),
+                // Tables\Columns\TextColumn::make('roles.name')->label('User Role'),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
             ])
             ->filters([

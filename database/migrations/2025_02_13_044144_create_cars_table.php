@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('make');
             $table->string('model');
             $table->year('year');
+            $table->enum('style', ['saloon', 'suv', 'hatchback', 'coupe', 'convertible', 'estate', 'mpv', 'pickup', 'van', 'minibus', 'campervan', 'limousine', 'other']);
+            $table->enum('transmission', ['automatic', 'manual']);
+            $table->enum('fuel_type', ['petrol', 'diesel', 'electric', 'hybrid']);
+            $table->string('color');
             $table->integer('mileage');
             $table->decimal('price', 10, 2)->nullable();
             $table->string('vin');
@@ -31,6 +35,13 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Disable foreign key checks
+        Schema::disableForeignKeyConstraints();
+
+        // Drop the table
         Schema::dropIfExists('cars');
+
+        // Enable foreign key checks
+        Schema::enableForeignKeyConstraints();
     }
 };

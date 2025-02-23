@@ -5,7 +5,7 @@ use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // return view('welcome');
+    //return view('welcome');
     //redirect to home page
     return redirect()->route('listings');
 });

@@ -20,7 +20,7 @@ class ContactController extends Controller
 
         Mail::to('andrew.muchiri@belvadigital.com')->send(new ContactForm($details));
 
-        return back()->with('success', 'Email sent successfully!');
+        return back()->with('success', 'Email sent successfully on sandbox!');
     }
 
     public function displayContactForm()

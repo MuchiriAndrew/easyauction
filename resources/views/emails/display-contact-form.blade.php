@@ -1,8 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('title', 'EasyAuction- Homepage')
-
-@section('content') --}}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,8 +14,12 @@
             <input type="text" id="name" name="name" required>
         </div>
         <div>
-            <label for="email">Email:</label>
+            <label for="email">Receipient Email:</label>
             <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="message">Subject:</label>
+            <input type="text" name="subject" required />
         </div>
         <div>
             <label for="message">Message:</label>
@@ -30,6 +29,3 @@
     </form>
 </body>
 </html>
-    
-{{-- @endsection --}}
-

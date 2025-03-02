@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CarResource\Pages;
 use App\Models\Car;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput\Mask;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -95,6 +96,14 @@ class CarResource extends Resource
                 Forms\Components\TextInput::make('mileage')
                     ->numeric()
                     ->required()
+                    ->mask(fn(Mask $mask) => $mask
+                        ->patternBlocks([
+                            'money' => fn(Mask $mask) => $mask
+                                ->numeric()
+                                ->thousandsSeparator(',')
+                                ->decimalSeparator('.'),
+                        ])
+                        ->pattern('money'))
                     ->placeholder('Insert mileage in kilometers')
                     ->extraAttributes(['oninput' => 'formatNumber(this)'])
                     ->label('Mileage'),
@@ -102,6 +111,14 @@ class CarResource extends Resource
 
                 Forms\Components\TextInput::make('price')
                     ->numeric()
+                    ->mask(fn(Mask $mask) => $mask
+                        ->patternBlocks([
+                            'money' => fn(Mask $mask) => $mask
+                                ->numeric()
+                                ->thousandsSeparator(',')
+                                ->decimalSeparator('.'),
+                        ])
+                        ->pattern('money'))
                     ->required()
                     ->label('Price')
                     ->extraAttributes(['oninput' => 'formatNumber(this)']),
@@ -145,7 +162,6 @@ class CarResource extends Resource
 
             ]);
     }
-
 
     public static function table(Table $table): Table
     {

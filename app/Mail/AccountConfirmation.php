@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactForm extends Mailable
+class AccountConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,9 +20,9 @@ class ContactForm extends Mailable
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct($email_details)
     {
-        $this->details = $details;
+        $this->details = $email_details;
     }
 
     /**
@@ -32,7 +32,7 @@ class ContactForm extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->details['subject'])
-                    ->view('emails.contact-form');
+        return $this->subject("Account Confirmation")
+                    ->view('emails.account-confirmation', ['details' => $this->details]);
     }
 }

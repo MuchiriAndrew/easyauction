@@ -43,15 +43,11 @@
                             </div>								 
                             
                             <div id="tab4" class="tab">
-                                {{-- Email: {{$vendor->email}}<br>
-                                Phone: {{$vendor->phone_number}}<br> --}}
-
                                 <p>
                                     <strong>Name:</strong> {{$vendor->name}}<br>
                                     <strong>Email:</strong> {{$vendor->email}}<br>
                                     <strong>Phone:</strong> {{$vendor->phone_number}}<br>
                                 </p>
-                                
                             </div>
                         </div>
 
@@ -117,7 +113,11 @@
                     <div class="head-side-bar">
                         <h4>SUBMIT BID</h4>
                     </div>
-                    <div class="contact-form">
+                    <form
+                    action="/customer/register"
+                    method="POST"
+                    class="contact-form">
+                        @csrf
                         <p>Fill in your details here to submit your bid</p>
                         <label for="name">Name <span class="text-red-600"> *</span></label>
                         <input type="text" class="name" name="name" placeholder="Your Name" value="">
@@ -131,14 +131,16 @@
                         <label for="name">Bid Amount<span class="text-red-600"> *</span></label>
                         <input type="text" class="phone" name="bid_amount" placeholder="Your Bid Amount" value="">
 
+                        <input type="hidden" name="auction_id" value="{{$auction->id}}">
+
                         {{-- <label for="name">Message (Optional)</label>
                         <textarea id="message" class="message" name="message" placeholder="Message..."></textarea> --}}
-                    </div>
-                    <div class="check-boxes">
-                        <div class="advanced-button">
-                            <a href="#">Submit Bid <i class="fa fa-paper-plane"></i></a>
+                        <div class="check-boxes">
+                            <button type="submit" class="advanced-button">
+                                <a href="#">Submit Bid <i class="fa fa-paper-plane"></i></a>
+                            </button>
                         </div>
-                    </div>
+                    </form>
                     <div class="subhead-side-bar">
                         <h4>Contact the Seller</h4>
                     </div>

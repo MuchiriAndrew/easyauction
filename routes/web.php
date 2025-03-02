@@ -1,7 +1,7 @@
 <?php
-
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,5 +16,11 @@ Route::get('/single-view/{id}', [PagesController::class, "single_view"])->name('
 Route::get('/listings', [PagesController::class, "listings"])->name('listings');
 
 
-Route::post('/send-contact-form', [ContactController::class, 'sendContactForm'])->name('send.contact.form');
-Route::get('/send-contact-form', [ContactController::class, 'displayContactForm'])->name('display.contact.form');
+Route::post('/send-contact-form', [MailController::class, 'sendContactForm'])->name('send.contact.form');
+Route::get('/send-contact-form', [MailController::class, 'displayContactForm'])->name('display.contact.form');
+
+
+Route::post('/send-account-confirmation', [MailController::class, 'sendAccountConfirmation'])->name('send.account.confirmation');
+Route::post('/send-email-verification', [MailController::class, 'sendEmailVerification'])->name('send.email.verificaion');
+
+Route::post('/customer/register', [UserController::class, 'register'])->name('register');

@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 
 // Route::get('/home', [PagesController::class, "home"])->name('home');
-Route::get('/single-view', [PagesController::class, "single_view"])->name('single-view');
+Route::get('/single-view/{id}', [PagesController::class, "single_view"])->name('single-view');
 Route::get('/listings', [PagesController::class, "listings"])->name('listings');
 
 

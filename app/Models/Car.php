@@ -12,8 +12,10 @@ class Car extends Model
     protected $table = 'cars';
 
     protected $fillable = [
+        'vendor_id',
         'make',
         'model',
+        'color',
         'year',
         'mileage',
         'vin',
@@ -27,5 +29,11 @@ class Car extends Model
     public function auction()
     {
         return $this->hasOne(Auction::class);
+    }
+
+    //relationsip with vendor
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id', 'id');
     }
 }

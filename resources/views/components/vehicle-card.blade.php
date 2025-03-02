@@ -8,8 +8,8 @@
         {{-- <span>{{ $price }}</span> --}}
         <div class="light-line"></div>
         <p>{{ $description }}</p>
-        <p class="text-green-400">Auction Ends In:  </p>
-        <p class="text-green-400">Highest Bid:  </p>
+        <p class="text-green-400">Auction Ends In: {{$end_time}} </p>
+        <p class="text-green-400">Highest Bid: {{$highest}}  </p>
         
         {{-- <div class="car-info">
             <ul>

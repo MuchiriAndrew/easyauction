@@ -16,6 +16,8 @@ class VehicleCard extends Component
     public $fuel;
     public $type;
     public $mileage;
+    public $end_time;
+    public $highest;
 
     public function __construct(
         $image = 'assets/images/featured-vehicle.jpg',
@@ -25,7 +27,9 @@ class VehicleCard extends Component
         $description = 'Default description.',
         $fuel = 'Fuel Type',
         $type = 'Car Type',
-        $mileage = '0'
+        $mileage = '0',
+        $end_time = '2021-12-31 23:59:59',
+        $highest = '0'
     ) {
         $this->image = $image;
         $this->link = $link;
@@ -35,6 +39,8 @@ class VehicleCard extends Component
         $this->fuel = $fuel;
         $this->type = $type;
         $this->mileage = $mileage;
+        $this->end_time = $end_time;
+        $this->highest = $highest;
     }
 
     public function render()

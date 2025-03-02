@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone_number',
         'password',
         'role',
     ];
@@ -44,4 +45,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    //create a function taht i can just call on any user object and it will return the user's role
+    public function getRoleAttribute()
+    {
+        return strtolower($this->roles->first()->name);
+    }
+   
 }

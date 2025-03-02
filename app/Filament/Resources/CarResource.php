@@ -9,6 +9,11 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Livewire\TemporaryUploadedFile;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class CarResource extends Resource
 {
@@ -86,7 +91,7 @@ class CarResource extends Resource
                 Forms\Components\TextInput::make('vin')
                     ->unique(ignoreRecord: true)
                     ->label('VIN (Vehicle Identification Number)'),
-                    //ADD PLACEHOLDER FOR MILEAGE
+                //ADD PLACEHOLDER FOR MILEAGE
                 Forms\Components\TextInput::make('mileage')
                     ->numeric()
                     ->required()
@@ -100,23 +105,47 @@ class CarResource extends Resource
                     ->required()
                     ->label('Price')
                     ->extraAttributes(['oninput' => 'formatNumber(this)']),
-            
+
                 Forms\Components\Select::make('status')
                     ->options([
-                        'approved' => 'Approved',
                         'pending' => 'Pending',
                         'inactive' => 'Inactive',
+                        'approved' => 'Approved',
                     ])
                     ->default('pending')
-                    ->label('Status'),
-                Forms\Components\FileUpload::make('photo_path')
-                    ->label('Car Image')
-                    ->directory('car-images'),
+                    ->label('Status')
+                    ->visible(fn() => Auth::user()->getRoleAttribute() === 'admin'),
+
+
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
-                //add for mileage
+
+
+                Forms\Components\FileUpload::make('photo_path')
+                    ->label('Car Image')
+                    ->directory('car-images')
+                    ->image()
+                    ->visibility('public')
+                    ->preserveFilenames()
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
+                        return (string) str($file->getClientOriginalName())->prepend('car-images/');
+                    })
+                    ->getUploadedFileUrlUsing(function ($file) {
+                        return Storage::url($file);
+                    }),
+
+
+
+
+
+
+                //create a hidden field that will store the vendor id from the authenticated user
+                Forms\Components\Hidden::make('vendor_id')
+                    ->default(auth()->id()),
+
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -126,15 +155,26 @@ class CarResource extends Resource
                 Tables\Columns\TextColumn::make('model')->label('Model'),
                 Tables\Columns\TextColumn::make('year')->label('Year'),
                 Tables\Columns\TextColumn::make('vin')->label('VIN'),
-                Tables\Columns\TextColumn::make('status')->label('Status'),
-                // Tables\Columns\ImageColumn::make('image')->label('Image'),
+
+                // Add a column to display the vendor id and link to the vendor profile
+                Tables\Columns\TextColumn::make('vendor_id')
+                    ->label('Vendor')
+                    ->formatStateUsing(fn($record) => $record->vendor->name),
+
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Status')
+                    ->colors([
+                        'success' => 'approved',
+                        'warning' => 'pending',
+                        'danger' => 'inactive',
+                    ]),
+
                 Tables\Columns\TextColumn::make('photo_path')
                     ->label('Vehicle Image')
-                    ->url(fn ($record) => asset('storage/' . $record->photo_path))
-                    //url very long, just show text of 'Image Link'
-                    ->formatStateUsing(fn ($state) => 'Image Link'),
+                    ->url(fn($record) => asset('storage/' . $record->photo_path))
+                    ->formatStateUsing(fn($state) => 'View Image'),
+
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
-                
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -153,6 +193,22 @@ class CarResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    // Override the `getEloquentQuery` method to modify the query
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+        $userId = $user->id;
+        $role = $user->getRoleAttribute();
+
+
+        if ($role === 'admin') {
+            return parent::getEloquentQuery();
+        } elseif ($role === 'vendor') {
+            return parent::getEloquentQuery()
+                ->where('vendor_id', $userId);
+        }
     }
 
     public static function getRelations(): array

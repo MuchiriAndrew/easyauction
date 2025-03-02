@@ -28,34 +28,31 @@ class UserResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->label('Email'),
+
+                //add field for phone number(optional)
+                Forms\Components\TextInput::make('phone_number')
+                    ->label('Phone Number')
+                    ->unique(ignoreRecord: true)
+                    ->placeholder('0712345678')
+                    ->maxLength(10)
+                    ->minLength(10),
+
+
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->label('Password')
                     ->dehydrateStateUsing(fn($state) => bcrypt($state))
-                    ->required(fn($record) => $record === null), // Required on create, optional on edit
+                    ->required(),
 
-                // Forms\Components\Select::make('role')
-                //     ->options([
-                //         'admin' => 'Admin',
-                //         'vendor' => 'Vendor',
-                //         'bidder' => 'Customer',
-                //     ])
-                //     ->label('Role'),
+
                 Forms\Components\Select::make('roles')
-                        ->relationship('roles', 'name')
-                        ->multiple()
-                        ->preload()
-                        ->searchable(),
-                    // ->options([
-                    //     'admin' => 'Admin',
-                    //     'vendor' => 'Vendor',
-                    //     'bidder' => 'Bidder',
-                    // ])
-                    // ->label('Role'),
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
 
-                // Forms\Components\CheckboxList::make('roles')
-                //     ->relationship('roles', 'name')
-                //     ->searchable()
+
+
             ]);
     }
 
@@ -68,7 +65,7 @@ class UserResource extends Resource
                 Tables\Columns\BadgeColumn::make('roles.name')
                     ->label('User Roles')
                     ->colors([
-                        'danger' => 'Super Admin',
+                        'danger' => 'Admin',
                         'warning' => 'Vendor',
                         'success' => 'Customer',
                     ]),
@@ -81,6 +78,7 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -100,6 +98,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'show' => Pages\ShowUser::route('/{record}'),
         ];
     }
 }

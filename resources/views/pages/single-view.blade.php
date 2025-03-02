@@ -1,36 +1,29 @@
 @extends('layouts.app')
 
-@section('title', 'EasyAuction- Homepage')
+@section('title', "EasyAuction - $car->make $car->model")
 
 @section('content')
+
+@php
+    // dd($car ,$vendor);
+    $user = auth()->user();
+    // dd($user);
+@endphp
 
 <section class="car-details mt-15">
     <div class="container">
         <div class="row">
             <div id="single-car" class="col-md-8">
                 <div class="up-content clearfix">
-                    <h2>Audi a6 tsi s-line</h2>
-                    {{-- <span>Highest Bid: KSh.300,000</span> --}}
+                    <h2>{{$car->make}} - {{$car->model}}</h2>
+                    {{-- <span>Highest Bid: KSh.0.00</span> --}}
                 </div>
 
 
                 <div class="flexslider">
                     <ul class="slidesr">
-                        <li data-thumb="{{asset("assets/images/featured-slide.jpg")}}">
-                          <img src="{{asset("assets/images/featured-slide.jpg")}}" alt="" />
-                        </li>
-                        {{-- <li >
-                          <img src="{{asset("assets/images/featured-slide-image.jpg")}}" alt="" />
-                        </li> --}}
-                        {{-- <li data-thumb="{{asset("assets/images/featured-slide-image.jpg")}}">
-                          <img src="{{asset("assets/images/featured-slide-image.jpg")}}" alt="" />
-                        </li>
-                        <li data-thumb="{{asset("assets/images/featured-slide-image.jpg")}}">
-                          <img src="{{asset("assets/images/featured-slide-image.jpg")}}" alt="" />
-                        </li>
-                        <li data-thumb="{{asset("assets/images/featured-slide-image.jpg")}}">
-                          <img src="{{asset("assets/images/featured-slide-image.jpg")}}" alt="" />
-                        </li> --}}
+                          <img src="{{asset("storage/$car->photo_path")}}" alt="" />
+                       
                     </ul>
                 </div>
 
@@ -39,25 +32,26 @@
                     <div class="tabs">
                         <ul class="tab-links">
                             <li class="active"><a href="#tab1">VEHICLE OVERVIEW</a></li>
-                            {{-- <li class="active"><a href="#tab2">description</a></li> --}}
-                            {{-- <li><a href="#tab3">vehicle location</a></li> --}}
+                            
                             <li><a href="#tab4">CONTACT DEALER</a></li>
                         </ul>
 
 
                         <div class="tab-content">
                             <div id="tab1" class="tab active">
-                                <p>	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi in dolorem blanditiis voluptatibus quidem nisi eaque, cupiditate minus omnis, voluptatum corporis neque placeat quod temporibus mollitia. Quod accusamus iure eveniet laboriosam laudantium, saepe quidem incidunt, laboriosam aliquid quibusdam atque.</p>
+                                <p>{{$car->description}}</p>
                             </div>								 
-                            <div id="tab2" class="tab">
-                                {{-- <h6>The dealer's details will be emailed to you immediately after you submit your query</h6> --}}
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea nesciunt voluptates sequi fugiat molestias temporibus quam cum voluptatem. Obcaecati, commodi? Totam ut magnam rem dolores sit at incidunt blanditiis id voluptate, consequatur odit accusamus, explicabo animi! Omnis sit doloribus quas. Ut, quia quidem repudiandae nemo unde beatae nihil necessitatibus maxime animi non, perspiciatis nesciunt aut blanditiis architecto, sunt cum vero corporis provident accusantium. Architecto, corrupti, ipsa ab necessitatibus a totam voluptates exercitationem illo provident officia saepe iste odit distinctio hic praesentium perspiciatis ullam excepturi possimus. Impedit reprehenderit enim eligendi illum provident mollitia quia, nisi tempore quidem dolorem pariatur, necessitatibus commodi?</p>
-                            </div>							 
-                            <div id="tab3" class="tab">
-                                <p>	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi in dolorem blanditiis voluptatibus quidem nisi eaque, cupiditate minus omnis, voluptatum corporis neque placeat quod temporibus mollitia. Quod accusamus iure eveniet laboriosam laudantium.</p>
-                            </div>
+                            
                             <div id="tab4" class="tab">
-                                <p>	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi in dolorem blanditiis voluptatibus quidem nisi eaque, cupiditate minus omnis, voluptatum corporis neque placeat quod temporibus mollitia. Quod accusamus iure eveniet laboriosam laudantium.</p>
+                                {{-- Email: {{$vendor->email}}<br>
+                                Phone: {{$vendor->phone_number}}<br> --}}
+
+                                <p>
+                                    <strong>Name:</strong> {{$vendor->name}}<br>
+                                    <strong>Email:</strong> {{$vendor->email}}<br>
+                                    <strong>Phone:</strong> {{$vendor->phone_number}}<br>
+                                </p>
+                                
                             </div>
                         </div>
 
@@ -94,6 +88,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
 
@@ -108,16 +104,12 @@
                     </div>
                     <div class="list-info">
                         <ul>
-                            <li><span>Make:</span>Audi</li>
-                            <li><span>Manufacture Year:</span>2015</li>
-                            <li><span>Fuel Type:</span>Petrol</li>
-                            {{-- <li><span>No. of Gears:</span>5</li> --}}
-                            <li><span>Transmission:</span>Automatic</li>
-                            <li><span>Color:</span>Silver</li>
-                            {{-- <li><span>Fuel Economy:</span>12l/City - 10l/hwy</li> --}}
-                            {{-- <li><span>Motor Capacity:</span>( 179KW / 400BHP )</li> --}}
-                            {{-- <li><span>Country of Origin:</span>Germany ( Munich )</li> --}}
-                            <li><span>Highest Bid:</span>KSh.300,000</li>
+                            <li><span>Make:</span>{{strtoupper($car->make)}}</li>
+                            <li><span>Manufacture Year:</span>{{strtoupper($car->year)}}</li>
+                            <li><span>Fuel Type:</span>{{strtoupper($car->fuel_type)}}</li>
+                            <li><span>Transmission:</span>{{strtoupper($car->transmission)}}</li>
+                            <li><span>Color:</span>{{strtoupper($car->color)}}</li>
+                            <li><span>Highest Bid:</span>0.0</li>
                         </ul>
                     </div> 
                 </div>
@@ -152,8 +144,7 @@
                     </div>
                     <div class="call-info">
                         <i class="fa fa-phone"></i>
-                        <h6>816-819-0221</h6>
-                        {{-- <p>Car code: <span>55637</span></p> --}}
+                        <h6>0786638466</h6>
                     </div>
                 </div>
             </div>

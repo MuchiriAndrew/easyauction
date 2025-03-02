@@ -50,7 +50,7 @@ class UserController extends Controller
         $user->assignRole('customer');
 
         //save the user
-        // $user->save();
+        $user->save();
 
         //send the user an email with their account details
         $email_details = [
@@ -71,5 +71,39 @@ class UserController extends Controller
 
 
 
+    }
+
+    public function confirmAccount($confirmation_string)
+    {
+        //use this function to confirm the account of a user
+        // dd($confirmation_string);
+
+        $hash = new Hashids(env('APP_KEY'),  20);
+        $decoded = $hash->decode($confirmation_string);
+
+        // dd($decoded);
+
+        if (count($decoded) > 0) {
+            $user = User::where('confirmation_id', $decoded[0])->first();
+            // dd($user);
+
+            if ($user) {
+                dd($user);
+                // $user->email_verified_at = now();
+                // $user->save();
+                // return redirect()->route('listings')->with('success', 'Account confirmed successfully');
+
+
+                //log the user in
+                // auth()->login($user);
+
+                //continue frm here
+                
+            } else {
+                return redirect()->route('listings')->with('error', 'Account not confirmed');
+            }
+        } else {
+            return redirect()->route('listings')->with('error', 'Account not confirmed');
+        }
     }
 }

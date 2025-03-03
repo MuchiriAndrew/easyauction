@@ -30,6 +30,23 @@
                             <h4>{{ $count ?? '0' }} results found</h4>
                         </div>
 
+                        
+                        @if ($filter && $filter == 'true')
+                        <div class="right-content">
+                            
+                            
+                            <div class="input-select">
+                                <button type="submit" class="advanced-button">
+                                    <a href="/listings">Clear Filters<i class="fa fa-close"></i></a>
+                                </button>
+                                
+                            </div>
+                            
+                        </div>
+                        @endif
+
+
+
                     </div>
                     <div id="featured-cars">
 
@@ -143,6 +160,7 @@
                                 <a>Search Now<i class="fa fa-search"></i></a>
 
                             </button>
+
                         </div>
                     </form>
 

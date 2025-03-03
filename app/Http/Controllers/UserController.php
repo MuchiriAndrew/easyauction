@@ -23,51 +23,99 @@ class UserController extends Controller
             'auction_id' => 'required',
         ]);
 
+        //check if there is a user already logged in and if so, use their details
+        //if no user is logged, in, check the email if it is already in the database
+        //if the email is in the database, direct the user to login
+        //if the email is not in the database, create a new user
+
+        $user = auth()->user();
+        if ($user) {
+            
+            $user_id = $user->id;
+            $auction_id = $request->auction_id;
+            $bid_amount = $request->bid_amount;
+
+            //just place the bid
+            $bid_controller = new BidController();
+            $bid_controller->place_bid($auction_id, $bid_amount, $user_id);
 
 
 
-        //create a string of random characters for the password
-        $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 16);
+        } else {
+            //check if the email is already in the database
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
 
-        //create a random id btwn 1 an 1000000 that will be used for confirmation
-        $confirmation_id = rand(1, 10000000000);
+                $bid_params = [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone_number' => $request->phone_number,
+                    'bid_amount' => $request->bid_amount,
+                    'auction_id' => $request->auction_id,
+                ];
+                //hash it and send it to the login page so that after login, the bid can be placed
+                $bid_params = base64_encode(json_encode($bid_params));
+                // dd($bid_params);
 
-        $hash = new Hashids(env('APP_KEY'),  20);
-        $hashed = $hash->encode($confirmation_id);
+                $url = '/login?place_bid=true&params='.$bid_params;
+
+                return redirect($url)
+                ->with('error', 'Email already exists. Please login');
 
 
-        // dd($hashed, $confirmation_id);
+                
+            } else {
+                //create a new user
+
+                //create a string of random characters for the password
+                $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 16);
+
+                //create a random id btwn 1 an 1000000 that will be used for confirmation
+                $confirmation_id = rand(1, 10000000000);
+
+                $hash = new Hashids(env('APP_KEY'),  20);
+                $hashed = $hash->encode($confirmation_id);
 
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone_number = $request->phone_number;
-        $user->password = bcrypt($password);
-        $user->confirmation_id = $confirmation_id;
+                // dd($hashed, $confirmation_id);
 
-        //assign the role of customer
-        $user->assignRole('customer');
 
-        //save the user
-        $user->save();
+                $user = new User();
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->phone_number = $request->phone_number;
+                $user->password = bcrypt($password);
+                $user->confirmation_id = $confirmation_id;
 
-        //send the user an email with their account details
-        $email_details = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'password' => $password,
-            'confirmation_string' => $hashed
-        ];
+                //assign the role of customer
+                $user->assignRole('customer');
 
-        // dd($email_details, $user);
-        //call the MailController to send the email
-        $mail_controller = new MailController();
-        $res = $mail_controller->sendAccountConfirmation($email_details);
-        // dd($res);
+                //save the user
+                $user->save();
 
-        return redirect()->back()->with('success', 'Bid submitted successfully. Check your email for account details');
+                //send the user an email with their account details
+                $email_details = [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone_number' => $request->phone_number,
+                    'password' => $password,
+                    'confirmation_string' => $hashed
+                ];
+
+                // dd($email_details, $user);
+                //call the MailController to send the email
+                $mail_controller = new MailController();
+                $res = $mail_controller->sendAccountConfirmation($email_details);
+                // dd($res);
+
+                return redirect()->back()->with('success', 'Bid submitted successfully. Check your email for account details');
+            }
+        }
+
+
+
+
+       
     }
 
     public function confirmAccount($confirmation_string)
@@ -123,5 +171,48 @@ class UserController extends Controller
         auth()->login($user);
 
         return redirect('/admin')->with('success', 'Account confirmed successfully. Welcome to your customer dashboard');
+    }
+
+    public function login()
+    {
+        //use this function to display the login form
+        return view('pages.login');
+    }
+
+    public function loginUser(Request $request)
+    {
+        //use this function to login the user
+        // dd($request->all());
+
+        //verify the request first
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        //attempt to login the user
+        $credentials = $request->only('email', 'password');
+        if (auth()->attempt($credentials)) {
+        // if (1 == 1) {
+            // Authentication passed...
+
+            //place bid here
+            $bid_params = json_decode(base64_decode($request['bid_params']), true);
+            // dd("here", $request->all(), $request['bid_params'], base64_decode($request['bid_params']), $bid_params);
+
+            $auction_id = $bid_params['auction_id'];
+            $bid_amount = $bid_params['bid_amount'];
+            $user_id = auth()->user()->id;
+
+
+            $bid_controller = new BidController();
+            $bid_controller->place_bid($auction_id, $bid_amount, $user_id);
+
+
+
+            return redirect()->route('listings')->with('success', 'Login successful and bid placed');
+        } else {
+            return redirect()->back()->with('error', 'Login failed');
+        }
     }
 }

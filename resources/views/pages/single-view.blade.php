@@ -141,7 +141,7 @@
 
                         {{-- <label for="name">Message (Optional)</label>
                         <textarea id="message" class="message" name="message" placeholder="Message..."></textarea> --}}
-                        <div class="check-boxes">
+                        <div class="bg-priamry">
                             <button type="submit" class="advanced-button">
                                 <a >Submit Bid <i class="fa fa-paper-plane"></i></a>
                             </button>

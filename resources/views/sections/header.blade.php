@@ -21,8 +21,9 @@
     <div id="main-header" class="main-header header-sticky">
         <div class="inner-header container clearfix">
             <div class="logo flex justify-center items-center" style="height: 110px;">
-                <a class="" href="{{ route('listings') }}"><img class="h-7" src="{{asset('assets/images/EASYAUCTION.png')}}"
-                        alt=""></a>
+                <a class="" href="/">
+                    <img class="h-7" src="{{asset('assets/images/EASYAUCTION.png')}}" alt="">
+                </a>
             </div>
             <div class="header-right-toggle pull-right hidden-md hidden-lg">
                 <a href="javascript:void(0)" class="side-menu-button"><i class="fa fa-bars"></i></a>

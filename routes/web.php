@@ -25,6 +25,11 @@ Route::post('/send-email-verification', [MailController::class, 'sendEmailVerifi
 
 Route::post('/customer/register', [UserController::class, 'register'])->name('register');
 
+
+
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'loginUser'])->name('login.user');
+
 Route::get('/confirm-account/{confirmation_string}', [UserController::class, 'confirmAccount'])->name('confirm.account');
 Route::post('/confirm-account', [UserController::class, 'update_after_confirmation'])->name('update.confirm.account');
 

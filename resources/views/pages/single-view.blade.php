@@ -22,7 +22,13 @@
 
                 <div class="flexslider">
                     <ul class="slidesr">
-                          <img src="{{asset("storage/$car->photo_path")}}" alt="" />
+                          <img id="featured-image" src="{{asset("storage/$car->photo_path")}}" alt="" />
+                          <style>
+                            #featured-image {
+                                /* height:500px; */
+                                width: 100%;
+                            }
+                          </style>
                        
                     </ul>
                 </div>
@@ -137,7 +143,7 @@
                         <textarea id="message" class="message" name="message" placeholder="Message..."></textarea> --}}
                         <div class="check-boxes">
                             <button type="submit" class="advanced-button">
-                                <a href="#">Submit Bid <i class="fa fa-paper-plane"></i></a>
+                                <a >Submit Bid <i class="fa fa-paper-plane"></i></a>
                             </button>
                         </div>
                     </form>
@@ -146,7 +152,7 @@
                     </div>
                     <div class="call-info">
                         <i class="fa fa-phone"></i>
-                        <h6>0786638466</h6>
+                        <h6>{{$vendor->phone_number}}</h6>
                     </div>
                 </div>
             </div>

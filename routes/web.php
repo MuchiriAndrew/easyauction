@@ -26,3 +26,6 @@ Route::post('/send-email-verification', [MailController::class, 'sendEmailVerifi
 Route::post('/customer/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/confirm-account/{confirmation_string}', [UserController::class, 'confirmAccount'])->name('confirm.account');
+Route::post('/confirm-account', [UserController::class, 'update_after_confirmation'])->name('update.confirm.account');
+
+Route::post('filter', [PagesController::class, 'filter'])->name('filter');

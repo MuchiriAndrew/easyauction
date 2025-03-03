@@ -1,38 +1,63 @@
+@php
+    // dd(auth()->user());
+    $user = auth()->user();
+    if ($user) {
+        $role = $user->getRoleAttribute();
+        // dd($role);
+        $nav = '';
+        if ($role == 'customer') {
+            $nav = 'Customer Portal';
+        } elseif ($role == 'admin') {
+            $nav = 'Admin Portal';
+        } elseif ($role == 'vendor') {
+            $nav = 'Vendor Portal';
+        }
+    } else {
+        $nav = 'Login';
+    }
+@endphp
+
 <header class="site-header">
     <div id="main-header" class="main-header header-sticky">
         <div class="inner-header container clearfix">
             <div class="logo flex justify-center items-center" style="height: 110px;">
-                <a class="" href="{{route('listings')}}"><img class="h-7" src="assets/images/EASYAUCTION.png" alt=""></a>
+                <a class="" href="{{ route('listings') }}"><img class="h-7" src="{{asset('assets/images/EASYAUCTION.png')}}"
+                        alt=""></a>
             </div>
             <div class="header-right-toggle pull-right hidden-md hidden-lg">
                 <a href="javascript:void(0)" class="side-menu-button"><i class="fa fa-bars"></i></a>
             </div>
             <nav class="main-navigation text-left hidden-xs hidden-sm">
-                <ul>
+                <ul id="menu" class="nav-bar">
                     {{-- <li><a href="index.html">Home</a></li> --}}
-                    
-                    <li><a href="/listings">Listings</a>
-                        
-                    </li>
-                   
-                    <li class="hidden">
-                        <p><a href="#" id="example-show" class="showLink"
-                                onclick="showHide('example');return false;"><i
-                                    class="fa fa-search"></i></a></p>
-                        <div id="example" class="more">
-                            <form method="get" id="blog-search" class="blog-search">
-                                <input type="text" class="blog-search-field" name="s"
-                                    placeholder="Type to search" value="">
-                            </form>
-                            <p><a href="#" id="example-hide" class="hideLink"
-                                    onclick="showHide('example');return false;"><i
-                                        class="
-                        fa fa-close"></i></a>
-                            </p>
-                        </div>
-                    </li>
+
+                    <div>
+
+                        <li><a href="/listings">Listings</a></li>
+                    </div>
+                    <div id="acc">
+                        <li><a href="/admin" target="_blank">{{ $nav }}</a></li>
+                        {{-- <li><a href="/admin">Register</a></li> --}}
+
+                    </div>                    
                 </ul>
             </nav>
         </div>
     </div>
 </header>
+
+<style>
+    #menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 110px;
+    }
+
+    #acc {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 110px;
+    }
+</style>

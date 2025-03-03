@@ -46,7 +46,11 @@ class MailController extends Controller
         //send the email
 
         try {
-            $res = Mail::to($email)->send(new AccountConfirmation($email_details));
+            //uncomment once done with testing
+            // $res = Mail::to($email)->send(new AccountConfirmation($email_details));
+
+            
+            $res = Mail::to("kariukia225@gmail.com")->send(new AccountConfirmation($email_details));
             return $res;
         } catch (\Exception $e) {
             return back()->with('error', 'Email not sent');

@@ -27,11 +27,54 @@ class PagesController extends Controller
         return view('pages.single-view', compact('auction', 'car', 'vendor'));
     }
     
-    public function listings() {
-        //get all auctions
-        $auctions = Auction::with('car')->get();
-        $count = count($auctions);
+    public function listings(Request $request) {
 
-        return view('pages.listings', compact('auctions', 'count'));
+        //get the filter parameters
+        $filter = $request->query('filter');
+        // dd($filter);
+
+        if($filter) {
+            // dd($request->all());
+            $parameters = $request->validate([
+                'make' => 'required',
+                'model' => 'required',
+                'style' => 'required',
+                'color' => 'required',
+            ]);
+            $auctions = Auction::with('car')->whereHas('car', function($query) use ($parameters) {
+                $query->where('make', $parameters['make'])
+                    ->where('model', $parameters['model'])
+                    ->where('style', $parameters['style'])
+                    ->where('color', $parameters['color']);
+            })->get();
+            // dd($auctions);
+            $count = count($auctions);
+            return view('pages.listings', compact('auctions', 'count'));
+        } else {
+            //get all auctions
+            $auctions = Auction::with('car')->get();
+            $count = count($auctions);
+            return view('pages.listings', compact('auctions', 'count'));
+        }
+        
+    }
+
+    public function filter(Request $request) {
+        // dd($request->all());
+
+        //validate request
+        $parameters = $request->validate([
+            'make' => 'required',
+            'model' => 'required',
+            'style' => 'required',
+            'color' => 'required',
+        ]);
+
+
+        //get the filter parameters and add to the /listings route
+
+        $url = '/listings?filter=true&make='.$parameters['make'].'&model='.$parameters['model'].'&style='.$parameters['style'].'&color='.$parameters['color'];
+
+        return redirect($url);
     }
 }

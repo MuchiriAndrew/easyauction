@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="about-us">
-                    <img src="assets/images/EASYAUCTION.png" alt="">
+                    <img src="{{asset('assets/images/EASYAUCTION.png')}}" alt="">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt facilis assumenda suscipit quo provident recusandae, nam harum voluptates illum! Doloremque dignissimos, dolores hic culpa expedita reiciendis molestias molestiae inventore quo.</p>
                     {{-- <ul>
                         <li><i class="fa fa-map-marker"></i>Raver Croft Drive Knoxville, 37921</li>

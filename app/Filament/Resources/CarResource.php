@@ -142,6 +142,8 @@ class CarResource extends Resource
                     ->label('Car Image')
                     ->directory('car-images')
                     ->image()
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('16:9')
                     ->visibility('public')
                     ->preserveFilenames()
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {

@@ -69,7 +69,16 @@ class UserResource extends Resource
                         'warning' => 'Vendor',
                         'success' => 'Customer',
                     ]),
-                // Tables\Columns\TextColumn::make('roles.name')->label('User Role'),
+                Tables\Columns\BadgeColumn::make('email_verified')
+                    ->label('Email Verified')
+                    ->enum([
+                        0 => 'No',
+                        1 => 'Yes',
+                    ])
+                    ->colors([
+                        'success' => 1,
+                        'danger' => 0,
+                    ]),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
             ])
             ->filters([

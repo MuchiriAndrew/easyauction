@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Mail\AccountConfirmation;
 use Illuminate\Http\Request;
 use App\Mail\ContactForm;
+use App\Mail\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
@@ -57,5 +58,28 @@ class MailController extends Controller
         }
     }
 
-    
+    public function sendEmailVerification($email_details)
+    {
+        $email = $email_details['email'];
+        $confirmation_string = $email_details['confirmation_string'];
+
+        $app_url = env('APP_URL');
+        $link = $app_url . "/verify-email/$confirmation_string";
+
+        $email_details['link'] = $link;
+
+        // dd($email_details);
+
+        //send the email
+
+        try {
+            //uncomment once done with testing
+            // $res = Mail::to($email)->send(new AccountConfirmation($email_details));
+            
+            $res = Mail::to("kariukia225@gmail.com")->send(new VerifyEmail($email_details));
+            return $res;
+        } catch (\Exception $e) {
+            return back()->with('error', 'Email not sent');
+        }
+    }
 }

@@ -173,6 +173,41 @@ class UserController extends Controller
         return redirect('/admin')->with('success', 'Account confirmed successfully. Welcome to your customer dashboard');
     }
 
+    public function verifyEmail($confirmation_string)
+    {
+        //use this function to confirm the account of a user
+        // dd($confirmation_string);
+
+        $hash = new Hashids(env('APP_KEY'),  20);
+        $decoded = $hash->decode($confirmation_string);
+
+        // dd($decoded);
+
+        if (count($decoded) > 0) {
+            $user = User::where('confirmation_id', $decoded[0])->first();
+            // dd($user);
+
+            if ($user) {
+                $user->email_verified_at = now();
+                $user->email_verified = 1;
+                $user->save();
+
+                return redirect()->route('listings')->with('success', 'Email verified successfully');
+
+            } else {
+                return redirect()->route('listings')->with('error', 'Email not verified');
+            }
+        } else {
+            return redirect()->route('listings')->with('error', 'Account not confirmed');
+        }
+    }
+
+
+
+
+
+
+    
     public function login()
     {
         //use this function to display the login form

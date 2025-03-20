@@ -32,8 +32,10 @@
                 <ul id="menu" class="nav-bar">
                     {{-- <li><a href="index.html">Home</a></li> --}}
 
-                    <div>
-
+                   
+                    <div class="flex justify-center items-center">
+                        
+                        <li><a href="/auctions">Auctions</a></li>
                         <li><a href="/listings">Listings</a></li>
                     </div>
                     <div id="acc">

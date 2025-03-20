@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Forms\Components\CommaDelimitedTextInput;
 use App\Filament\Resources\AuctionResource\Pages;
 use App\Models\Auction;
+use App\Models\Car;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput\Mask;
 use Filament\Resources\Form;
@@ -24,7 +25,13 @@ class AuctionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('car_id')
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->label('Name'),
+
+                //replace this select with a multiple select of multiple cars, i want to be able to select multiple cars for one auction
+                Forms\Components\Select::make('car_ids')
+                    ->multiple()
                     ->options(\App\Models\Car::all()->mapWithKeys(function ($car) {
                         $status = $car->status;
                         if ($status == 'approved') {
@@ -34,34 +41,7 @@ class AuctionResource extends Resource
                         }
                     }))
                     ->required()
-                    ->label('Car (Only approved vehicles will be available for auction)' ),
-                    
-                Forms\Components\TextInput::make('start_price')
-                    ->mask(fn(Mask $mask) => $mask
-                        ->patternBlocks([
-                            'money' => fn(Mask $mask) => $mask
-                                ->numeric()
-                                ->thousandsSeparator(',')
-                                ->decimalSeparator('.'),
-                        ])
-                        ->pattern('money'))
-                    ->required()
-                    ->placeholder('Initial price at which the bidding starts')
-                    ->label('Starting Price'),
-
-
-                Forms\Components\TextInput::make('reserve_price')
-                    ->mask(fn(Mask $mask) => $mask
-                        ->patternBlocks([
-                            'money' => fn(Mask $mask) => $mask
-                                ->numeric()
-                                ->thousandsSeparator(',')
-                                ->decimalSeparator('.'),
-                        ])
-                        ->pattern('money'))
-                    ->placeholder('Minimum price that the seller is willing to accept for the item')
-                    ->label('Reserve Price'),
-
+                    ->label('Car (Only approved vehicles will be available for auction)'),
 
                 Forms\Components\Select::make('status')
                     ->options([
@@ -77,6 +57,9 @@ class AuctionResource extends Resource
                 Forms\Components\DateTimePicker::make('end_time')
                     ->required()
                     ->label('End Time'),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Description'),
             ]);
     }
 
@@ -84,29 +67,58 @@ class AuctionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('car_id')->label('Vehicle'),
-                Tables\Columns\TextColumn::make('car.make')->label('Make'),
-                Tables\Columns\TextColumn::make('car.model')->label('Model'),
+                Tables\Columns\TextColumn::make('name')->label('Name'),
+                // Tables\Columns\TextColumn::make('car.make')->label('Make'),
+                // Tables\Columns\TextColumn::make('car.model')->label('Model'),
                 // Tables\Columns\TextColumn::make('start_price')->label('Starting Price'),
                 // Tables\Columns\TextColumn::make('reserve_price')->label('Reserve Price'),
 
-                Tables\Columns\TextColumn::make('start_price')
-                    ->label('Starting Price')
-                    ->formatStateUsing(fn($state) => number_format($state, 2)),
+                // Tables\Columns\TextColumn::make('start_price')
+                //     ->label('Starting Price')
+                //     ->formatStateUsing(fn($state) => number_format($state, 2)),
 
-                Tables\Columns\TextColumn::make('reserve_price')
-                    ->label('Reserve Price')
-                    ->formatStateUsing(fn($state) => number_format($state, 2)),
+                // Tables\Columns\TextColumn::make('reserve_price')
+                //     ->label('Reserve Price')
+                //     ->formatStateUsing(fn($state) => number_format($state, 2)),
 
 
-                Tables\Columns\TextColumn::make('status')->label('Status'),
+                // Tables\Columns\TextColumn::make('status')->label('Status'),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Status')
+                    ->enum([
+                        'open' => 'Open',
+                        'closed' => 'Closed',
+                        'pending' => 'Pending',
+                    ])
+                    ->colors([
+                        'success' => 'open',
+                        'danger' => 'closed',
+                        'warning' => 'pending',
+                    ]),
                 Tables\Columns\TextColumn::make('start_time')->label('Start Time'),
                 Tables\Columns\TextColumn::make('end_time')->label('End Time'),
-                Tables\Columns\TextColumn::make('car.photo_path')
-                    ->label('Vehicle Image')
-                    ->url(fn($record) => asset('storage/' . $record->car->photo_path))
-                    //url very long, just show text of 'Image Link'
-                    ->formatStateUsing(fn($state) => 'Image Link'),
+                // Tables\Columns\TextColumn::make('car.photo_path')
+                //     ->label('Vehicle Image')
+                //     ->url(fn($record) => asset('storage/' . $record->car->photo_path))
+                //     //url very long, just show text of 'Image Link'
+                //     ->formatStateUsing(fn($state) => 'Image Link'),
+
+                //display the cars in the auction
+                Tables\Columns\BadgeColumn::make('car_ids')
+                    ->label('Cars')
+                    //get the car_ids...decode the json and display the car ids and from each id, query the make and model of the car from the cars table
+                    ->formatStateUsing(function ($state) {
+                        // $carIds = json_decode($state);
+                        $carIds = str_replace(' ', '', $state);
+                        $carIds = explode(',', $carIds);
+
+                        $cars = [];
+                        foreach ($carIds as $carId) {
+                            $car = Car::where('id', $carId)->first();
+                            $cars[] = $car->make . ' ' . $car->model;
+                        }
+                        return implode(', ', $cars);
+                    }),
 
             ])->filters([
                 Tables\Filters\SelectFilter::make('status')

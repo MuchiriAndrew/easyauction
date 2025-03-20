@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('car_id')->constrained()->onDelete('cascade');
-            $table->decimal('start_price', 10, 2);
-            $table->decimal('reserve_price', 10, 2);
-            $table->enum('status', ['open', 'closed', 'pending']);
+            $table->string('name');
+            $table->json('car_ids')->nullable();
+            $table->decimal('start_price', 10, 2)->nullable();
+            $table->decimal('reserve_price', 10, 2)->nullable();
+            $table->enum('status', ['open', 'closed', 'pending'])->default('pending');
             $table->timestamp('start_time');
             $table->timestamp('end_time');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

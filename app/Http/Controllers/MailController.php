@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountConfirmation;
+use App\Mail\BidPlaced;
 use Illuminate\Http\Request;
 use App\Mail\ContactForm;
 use App\Mail\VerifyEmail;
@@ -81,5 +82,24 @@ class MailController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Email not sent');
         }
+    }
+
+    public function sendBidPlaced($bid)
+    {
+        $email = $bid->user->email;
+        $username = $bid->user->name;
+        $car_name = $bid->car->make . ' ' . $bid->car->model;
+        $auction_name = $bid->auction->name;
+        $bid_amount = $bid->amount;
+
+        $details = [
+            'username' => $username,
+            'car_name' => $car_name,
+            'auction_name' => $auction_name,
+            'bid_amount' => $bid_amount
+        ];
+
+        $res = Mail::to($email)->send(new BidPlaced($details));
+        return $res;
     }
 }

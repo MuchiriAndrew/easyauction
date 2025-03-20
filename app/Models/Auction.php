@@ -12,7 +12,9 @@ class Auction extends Model
     protected $table = 'auctions';
 
     protected $fillable = [
-        'car_id',
+        'name',
+        'car_ids',
+        'description',
         'start_price',
         'reserve_price',
         'status',
@@ -20,9 +22,15 @@ class Auction extends Model
         'end_time',
     ];
 
-    //define rlationship with car
-    public function car()
+    protected $casts = [
+        'car_ids' => 'array',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
+    // Define relationship with cars
+    public function cars()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsToMany(Car::class, null, null, null, 'car_ids');
     }
 }

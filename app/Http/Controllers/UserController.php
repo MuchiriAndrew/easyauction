@@ -21,6 +21,7 @@ class UserController extends Controller
             'phone_number' => 'required',
             'bid_amount' => 'required',
             'auction_id' => 'required',
+            'car_id' => 'required',
         ]);
 
         //check if there is a user already logged in and if so, use their details
@@ -34,11 +35,17 @@ class UserController extends Controller
             $user_id = $user->id;
             $auction_id = $request->auction_id;
             $bid_amount = $request->bid_amount;
-
+            $car_id = $request->car_id;
             //just place the bid
             $bid_controller = new BidController();
-            $bid_controller->place_bid($auction_id, $bid_amount, $user_id);
+            $res = $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id);
+            // dd($res);
 
+            if($res['success']) {
+                return redirect('/admin')->with('success', $res['message']);
+            } else {
+                return redirect()->back()->with('error', $res['message']);
+            }
 
 
         } else {
@@ -52,6 +59,7 @@ class UserController extends Controller
                     'phone_number' => $request->phone_number,
                     'bid_amount' => $request->bid_amount,
                     'auction_id' => $request->auction_id,
+                    'car_id' => $request->car_id,
                 ];
                 //hash it and send it to the login page so that after login, the bid can be placed
                 $bid_params = base64_encode(json_encode($bid_params));
@@ -112,10 +120,6 @@ class UserController extends Controller
             }
         }
 
-
-
-
-       
     }
 
     public function confirmAccount($confirmation_string)
@@ -203,11 +207,6 @@ class UserController extends Controller
     }
 
 
-
-
-
-
-    
     public function login()
     {
         //use this function to display the login form
@@ -238,10 +237,10 @@ class UserController extends Controller
             $auction_id = $bid_params['auction_id'];
             $bid_amount = $bid_params['bid_amount'];
             $user_id = auth()->user()->id;
-
+            $car_id = $bid_params['car_id'];
 
             $bid_controller = new BidController();
-            $bid_controller->place_bid($auction_id, $bid_amount, $user_id);
+            $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id);
 
 
 

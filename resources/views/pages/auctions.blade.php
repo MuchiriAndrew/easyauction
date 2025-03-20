@@ -1,54 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'EasyAuction- Listings')
+@section('title', 'EasyAuction- Auctions')
 
 @section('content')
-
-    @php
-        // dd(request()->all());
-        $filter = request('filter');
-
-        if ($filter && $filter == 'true') {
-            $make = request('make');
-            $model = request('model');
-            $style = request('style');
-            $color = request('color');
-        } else {
-            $make = '';
-            $model = '';
-            $style = '';
-            $color = '';
-        }
-    @endphp
 
     <section class="listing-grid mt-15">
         <div class="container">
             <div class="row">
-                <div id="listing-cars" class="col-md-9">
+                <div id="listing-cars" class="col-md-12">
                     <div class="pre-featured clearfix h-17">
                         <div class="info-text">
-                            <h4>{{ $count ?? '0' }} results found</h4>
+                            <h4>{{ $count ?? '0' }} {{ $count == 1 ? 'auction' : 'auctions' }} found</h4>
                         </div>
-
-                        
-                        @if ($filter && $filter == 'true')
-                        <div class="right-content">
-                            
-                            
-                            <div class="input-select">
-                                <button type="submit" class="advanced-button">
-                                    <a href="/listings">Clear Filters<i class="fa fa-close"></i></a>
-                                </button>
-                                
-                            </div>
-                            
-                        </div>
-                        @endif
 
 
 
                     </div>
-                    <div id="featured-cars">
+                    <div id="featured-auctions">
 
                         <div class="row">
                             <style>
@@ -62,41 +30,35 @@
                                 // dd($auctions);
                             @endphp
 
-                            @foreach ($cars as $ind=>$car)
+                            @foreach ($auctions as $ind=>$auction)
                                 @php
-                                    // $car = $auction->car;
-                                    // dd($car->photo_path);
+                                //get the car ids
+                                $carIds = $auction->car_ids;
+                                $cars = [];
+                                // $photoPaths = [];
+                                foreach($carIds as $carId) {
+                                    $car = \App\Models\Car::find($carId);
+                                    //get the photo path
+                                    $photoPath = $car->photo_path;
+                                    //get the make and model
+                                    $make = $car->make;
+                                    $model = $car->model;
+                                    // $photoPaths[] = $photoPath;
+                                    $cars[] = $car;
+                                }
+                                   
                                 @endphp
 
-                                <x-vehicle-card :image="'storage/' . $car->photo_path" :link="'/single-view/' . $car->id" :title="$car->make . ' ' . $car->model" :description="$car->description"
-                                    :fuel="$car->fuel_type" :type="$car->style" :mileage="$car->mileage" :highest="$auction->current_bid ?? '0.00'" />
+                                <x-auction-card :link="'/auctions/' . $auction->id" :auction="$auction" :cars="$cars"   />
+                                {{-- <x-auction-card :link="'/auctions/' . $auction->id" :auction="$auction" :cars="$cars"   /> --}}
+                    
                             @endforeach
 
                         </div>
                     </div>
-
-                    
-                    {{-- <div class="pagination">
-                    <div class="prev">
-                        <a href="#"><i class="fa fa-arrow-left"></i>Prev</a>
-                    </div>
-                    <div class="page-numbers">
-                        <ul>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">14</a></li>
-                            <li class="active"><a href="#">15</a></li>
-                            <li><a href="#">16</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">47</a></li>
-                        </ul>
-                    </div>
-                    <div class="next">
-                        <a href="#">Next<i class="fa fa-arrow-right"></i></a>
-                    </div>
-                </div> --}}
+                   
                 </div>
-                <div id="sidebar" class="col-md-3">
+                {{-- <div id="sidebar" class="col-md-3">
                     <form action="/filter" method="POST" class="sidebar-content">
                         @csrf
                         <div class="head-side-bar">
@@ -135,20 +97,10 @@
 
                                 </select>
                             </div>
-                            {{-- <div class="slider-range">
-                                <p>
-                                    <input type="text" class="range" id="amount" readonly>
-                                </p>
-                                <div id="slider-range"></div>
-                            </div> --}}
+                          
 
                             <div class="select">
                                 <select name="color" id="color">
-                                    {{-- <option value="-1">Select Color</option>
-                                    <option>Black</option>
-                                    <option>Red</option>
-                                    <option>Blue</option>
-                                    <option>Silver</option> --}}
 
                                     <option value="-1">Select Color</option>
                                     <option {{ $color == 'Black' ? 'selected' : '' }}>Black</option>
@@ -166,7 +118,7 @@
                         </div>
                     </form>
 
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

@@ -138,7 +138,7 @@
                         <input type="text" class="phone" name="bid_amount" placeholder="Your Bid Amount" value="">
 
                         <input type="hidden" name="auction_id" value="{{$auction->id}}">
-
+                        <input type="hidden" name="car_id" value="{{$car->id}}">
                         {{-- <label for="name">Message (Optional)</label>
                         <textarea id="message" class="message" name="message" placeholder="Message..."></textarea> --}}
                         <div class="bg-priamry">

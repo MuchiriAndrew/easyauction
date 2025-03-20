@@ -12,8 +12,13 @@ Route::get('/', function () {
 
 
 // Route::get('/home', [PagesController::class, "home"])->name('home');
-Route::get('/single-view/{id}', [PagesController::class, "single_view"])->name('single-view');
 Route::get('/listings', [PagesController::class, "listings"])->name('listings');
+Route::get('/single-view/{id}', [PagesController::class, "single_view"])->name('single-view');
+
+
+Route::get('/auctions', [PagesController::class, "auctions"])->name('auctions');
+Route::get('/auctions/{id}', [PagesController::class, "auction_listings"])->name('auction.listings');
+
 
 
 Route::post('/send-contact-form', [MailController::class, 'sendContactForm'])->name('send.contact.form');

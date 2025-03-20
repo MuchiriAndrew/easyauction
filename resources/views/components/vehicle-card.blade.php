@@ -8,7 +8,9 @@
             <a href="{{ $link }}"><h2>{{ $title }}</h2></a>
             {{-- <span>{{ $price }}</span> --}}
             <div class="light-line"></div>
-            <p>{{ $description }}</p>
+            {{-- <p>{{ $description }}</p> --}}
+            {{-- limit the description to 150 characters and if not completed add a read more link --}}
+            <p>{{ Str::limit($description, 150) }}</p>
             <p class="text-green-400">Auction Ends In: {{$end_time}} </p>
             <p class="text-green-400">Highest Bid: {{$highest}}  </p>
             

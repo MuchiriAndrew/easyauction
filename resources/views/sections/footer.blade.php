@@ -1,34 +1,24 @@
-<footer>
+<footer style="position: relative; bottom: 0; width: 100%;">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
                 <div class="about-us">
                     <img src="{{asset('assets/images/EASYAUCTION.png')}}" alt="">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt facilis assumenda suscipit quo provident recusandae, nam harum voluptates illum! Doloremque dignissimos, dolores hic culpa expedita reiciendis molestias molestiae inventore quo.</p>
-                    {{-- <ul>
-                        <li><i class="fa fa-map-marker"></i>Raver Croft Drive Knoxville, 37921</li>
-                        <li><i class="fa fa-phone"></i>+55 417-634-7071</li>
-                        <li><i class="fa fa-envelope-o"></i>contact@auction.com</li>
-                    </ul> --}}
+                    <p>EasyAuction is a platform for buying and selling cars at auction. We offer a wide range of cars from all over the world!</p>
+                   
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="featured-links">
                     <h4>Featured Links</h4>
                     <ul>
+                        <li><a href="/auctions"><i class="fa fa-caret-right"></i>Auctions</a></li>
                         <li><a href="/listings"><i class="fa fa-caret-right"></i>Listings</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Terms &amp; Conditions</a></li>
                         <li><a href="#"><i class="fa fa-caret-right"></i>Contact</a></li>
-                        {{-- <li><a href="#"><i class="fa fa-caret-right"></i>Meet The Team</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Privacy Policy</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Company News</a></li> --}}
+                        
                     </ul>
-                    {{-- <ul>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Shop</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>New Vehicle</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Features</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Promotions</a></li>
-                    </ul> --}}
+                   
                 </div>
             </div>
             {{-- <div class="col-md-3">

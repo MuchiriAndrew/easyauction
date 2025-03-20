@@ -16,4 +16,11 @@ class ListAuctions extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         AuctionResource\Widgets\StatsOverview::class,
+    //     ];
+    // }
 }

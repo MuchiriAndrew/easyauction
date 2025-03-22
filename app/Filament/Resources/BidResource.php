@@ -16,63 +16,14 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+// use Filament\Tables\Actions\ExportAction;
+
 
 class BidResource extends Resource
 {
     protected static ?string $model = Bid::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                // Forms\Components\TextInput::make('amount')
-                //     ->numeric()
-                //     ->required()
-                //     ->label('Amount'),
-                // Forms\Components\TextInput::make('status')
-                //     //if in view mode, set the value to be the current status of the record...check if the record is not null
-                //     ->default(function ($record) {
-                //         if ($record) {
-                //             return $record->status;
-                //         }
-                //     })
-                //     ->required()
-                //     ->label('Status'),
-                // Forms\Components\TextInput::make('user_id')
-                //     ->default(function ($record) {
-                //         if ($record) {
-                //             $user = User::where('id', $record->user_id)->first();
-                //             return $user->name;
-                //             // return $record->user_id;
-                //         }
-                //     })
-                //     ->required()
-                //     ->label('User'),
-                // Forms\Components\TextInput::make('car_id')
-                //     ->default(function ($record) {
-                //         if ($record) {
-                //             $car = Car::where('id', $record->car_id)->first();
-                //             return $car->make . ' ' . $car->model;
-                //             // return $record->car_id;
-                //         }
-                //     })
-                //     ->required()
-                //     ->label('Car'),
-                // Forms\Components\TextInput::make('auction_id')
-                //     ->default(function ($record) {
-                //         if ($record) {
-                //             $auction = Auction::where('id', $record->auction_id)->first();
-                //             return $auction->name;
-                //             // return $record->auction_id;
-                //         }
-                //     })
-                //     ->required()
-                //     ->label('Auction'),
-
-            ]);
-    }
 
     public static function table(Table $table): Table
     {
@@ -94,24 +45,43 @@ class BidResource extends Resource
                 })->label('Auction'),
 
                 //display the amount of the bid
-                Tables\Columns\TextColumn::make('amount')->label('Amount'),
+                //comma separate the amount
+                Tables\Columns\TextColumn::make('amount')->label('Amount (KSH)')->formatStateUsing(function ($state) {
+                    return number_format($state);
+                }),
 
                 //display the status of the bid
-                Tables\Columns\TextColumn::make('status')->label('Status'),
+                // Tables\Columns\TextColumn::make('status')->label('Status'),
+                //make it a BadgeColumn and set the colors for the different statuses
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'success' => 'HIGHEST',
+                        'danger' => 'OUTBID',
+                        'warning' => 'PENDING',
+                    ])
+                    ->label('Status')
+                    ->sortable(),
                 
                 
                 
             ])
             ->filters([
-                //
+                //adda filter for different statuses
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'HIGHEST' => 'HIGHEST',
+                        'OUTBID' => 'OUTBID',
+                        'PENDING' => 'PENDING',
+                    ])
+                    ->label('Status'),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-                // Tables\Actions\ViewAction::make(),
+                // Add ExportAction here if you want it as a single action
+                // ExportAction::make(),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
+                // Add ExportAction here if you want it as a bulk action
+                // ExportAction::make(),
             ]);
     }
 

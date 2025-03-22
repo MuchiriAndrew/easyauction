@@ -18,25 +18,42 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'phone_number' => 'required',
+            'phone_number' => 'required|digits:10',
             'bid_amount' => 'required',
             'auction_id' => 'required',
             'car_id' => 'required',
+        ],
+        [
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'email.email' => 'Email is invalid',
+            'phone_number.required' => 'Phone number is required',
+            'bid_amount.required' => 'Bid amount is required',
+            'auction_id.required' => 'Auction id is required',
+            'car_id.required' => 'Car id is required',
         ]);
+
+
+
 
         //check if there is a user already logged in and if so, use their details
         //if no user is logged, in, check the email if it is already in the database
         //if the email is in the database, direct the user to login
         //if the email is not in the database, create a new user
+        $bid_amount = $request->bid_amount;
+        $bid_amount = str_replace(',', '', $bid_amount);
 
         $user = auth()->user();
         if ($user) {
             
+            //check if the credentials put in are the same as the user's credentials
+            if ($user->email != $request->email) {
+                return redirect()->back()->with('error', 'You are already logged in. Please use your email to place a bid');
+            }
+            
             $user_id = $user->id;
             $auction_id = $request->auction_id;
-            $bid_amount = $request->bid_amount;
             $car_id = $request->car_id;
-            //just place the bid
             $bid_controller = new BidController();
             $res = $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id);
             // dd($res);
@@ -57,7 +74,7 @@ class UserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'phone_number' => $request->phone_number,
-                    'bid_amount' => $request->bid_amount,
+                    'bid_amount' => $bid_amount,
                     'auction_id' => $request->auction_id,
                     'car_id' => $request->car_id,
                 ];

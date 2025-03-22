@@ -48,9 +48,13 @@ class TransactionResource extends Resource
                     ->label('User'),
                 
                 //display the amount
+                //comma separate the amount
                 Tables\Columns\TextColumn::make('amount')
                     // ->numeric()
-                    ->label('Amount'),
+                    ->label('Amount')
+                    ->formatStateUsing(function ($state) {
+                        return number_format($state);
+                    }),
 
                 //fetch the auction name from the auction id
                 Tables\Columns\TextColumn::make('auction_id')

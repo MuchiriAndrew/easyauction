@@ -100,7 +100,9 @@
                 @include('sections.header')
 
 
-                <main>
+                <main class="mt-15 flex justify-center items-center">
+                    
+
                     @yield('content')
                 </main>
 
@@ -116,6 +118,46 @@
     </div>
 
 </body>
+
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $(".error-messages").slideUp("slow");
+        }, 4000); // 6000 milliseconds = 6 seconds
+    });
+    $(document).ready(function() {
+        setTimeout(function() {
+            $(".success-messages").slideUp("slow");
+        }, 4000); // 6000 milliseconds = 6 seconds
+    });
+</script>
+
+<style>
+
+    main {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .success-messages {
+        background-color: rgb(19, 172, 19);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .error-messages {
+        background-color: red;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .error-messages p {
+        color: white;
+        
+    }
+</style>
 
 <script type="text/javascript" src="{{ asset('assets/js/jquery-1.11.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>

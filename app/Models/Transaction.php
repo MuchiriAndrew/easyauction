@@ -15,6 +15,8 @@ class Transaction extends Model
         'auction_id',
         'bid_id',
         'user_id',
+        'car_id',
+        'transaction_details',
         'amount',
         'payment_status',
         'transaction_date',
@@ -28,5 +30,15 @@ class Transaction extends Model
     //relationship with bid
     public function bid() {
         return $this->belongsTo(Bid::class, 'bid_id', 'id');
+    }
+
+    //relationship with user
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    //relationship with car
+    public function car() {
+        return $this->belongsTo(Car::class, 'car_id', 'id');
     }
 }

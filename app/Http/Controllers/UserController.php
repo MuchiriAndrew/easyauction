@@ -42,6 +42,7 @@ class UserController extends Controller
         //if the email is not in the database, create a new user
         $bid_amount = $request->bid_amount;
         $bid_amount = str_replace(',', '', $bid_amount);
+        $phone_number = $request->phone_number;
 
         $user = auth()->user();
         if ($user) {
@@ -55,7 +56,7 @@ class UserController extends Controller
             $auction_id = $request->auction_id;
             $car_id = $request->car_id;
             $bid_controller = new BidController();
-            $res = $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id);
+            $res = $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id, $phone_number);
             // dd($res);
 
             if($res['success']) {
@@ -77,6 +78,7 @@ class UserController extends Controller
                     'bid_amount' => $bid_amount,
                     'auction_id' => $request->auction_id,
                     'car_id' => $request->car_id,
+                    'phone_number' => $phone_number,
                 ];
                 //hash it and send it to the login page so that after login, the bid can be placed
                 $bid_params = base64_encode(json_encode($bid_params));
@@ -255,9 +257,10 @@ class UserController extends Controller
             $bid_amount = $bid_params['bid_amount'];
             $user_id = auth()->user()->id;
             $car_id = $bid_params['car_id'];
+            $phone_number = $bid_params['phone_number'];
 
             $bid_controller = new BidController();
-            $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id);
+            $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id, $phone_number);
 
 
 

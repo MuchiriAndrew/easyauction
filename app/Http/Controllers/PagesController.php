@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Bid;
 use App\Models\Car;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -38,8 +40,13 @@ class PagesController extends Controller
         })->first();
         // dd($auction);
 
+        $highest_bid = Bid::where('auction_id', $auction->id)
+                            ->where('car_id', $id)
+                            ->where("status", "like", "%HIGHEST%")
+                            ->first();
+        // dd($highest_bid);
 
-        return view('pages.single-view', compact('auction', 'car', 'vendor', 'auction'));
+        return view('pages.single-view', compact('auction', 'car', 'vendor', 'auction', 'highest_bid'));
     }
     
     public function listings(Request $request) {
@@ -119,5 +126,25 @@ class PagesController extends Controller
         $url = '/listings?filter=true&make='.$parameters['make'].'&model='.$parameters['model'].'&style='.$parameters['style'].'&color='.$parameters['color'];
 
         return redirect($url);
+    }
+
+    public function payment_processing($id) {
+        $transaction = Transaction::find($id);
+        $payment_status = $transaction->payment_status;
+
+        return view('pages.payment-processing', compact('id', 'payment_status'));
+    }
+    
+    public function mpesa_payment_failed($trans_id) {
+        $transaction = Transaction::find($trans_id);
+        //update the transaction status to failed
+        $transaction->payment_status = "FAILED";
+        $transaction->save();
+        //get the car_id
+        $car_id = $transaction->car_id;
+
+
+        return redirect("/single-view/$car_id")->with('error', 'Failed to process MPESA Payment. Kindly try again');
+
     }
 }

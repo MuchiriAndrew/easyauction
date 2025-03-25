@@ -81,6 +81,11 @@
         .swiper-pagination-bullet-active {
             background: #ffffff;
         }
+
+        #footer {
+            position: relative !important;
+            bottom: 0px !important;
+        }
     </style>
 
     <title>@yield('title')</title>
@@ -106,7 +111,10 @@
                     @yield('content')
                 </main>
 
-                @include('sections.footer')
+                <div id="footer">
+                    @include('sections.footer')
+
+                </div>
 
                 <a href="#" class="go-top"><i class="fa fa-angle-up"></i></a>
 

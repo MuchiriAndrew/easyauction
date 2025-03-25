@@ -121,7 +121,11 @@
                                 <li><span>Fuel Type:</span>{{ strtoupper($car->fuel_type) }}</li>
                                 <li><span>Transmission:</span>{{ strtoupper($car->transmission) }}</li>
                                 <li><span>Color:</span>{{ strtoupper($car->color) }}</li>
-                                <li><span>Highest Bid:</span>0.0</li>
+                                @if($highest_bid)
+                                <li><span>Highest Bid:</span>KSH {{number_format($highest_bid->amount ?? 0)}}</li>
+                                @else
+                                <li><span>Highest Bid:</span>KSH 0.00</li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -132,9 +136,9 @@
                         <form action="/customer/register" method="POST" class="contact-form">
                             @csrf
                             <p>Fill in your details here to submit your bid</p>
-                            <label for="name">Name <span class="text-red-600"> *</span></label>
-                            <input type="text" class="name" {{-- display the old value --}} value="{{ old('name') }}"
-                                name="name" placeholder="Your Name" value="">
+                            {{-- <label for="name">Name <span class="text-red-600"> *</span></label>
+                            <input type="text" class="name" value="{{ old('name') }}"
+                                name="name" placeholder="Your Name" value=""> --}}
 
                             <label for="name">Email<span class="text-red-600"> *</span></label>
                             <input type="email" value="{{ old('email') }}" class="email" name="email"

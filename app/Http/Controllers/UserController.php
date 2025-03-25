@@ -16,7 +16,7 @@ class UserController extends Controller
 
         //verify the request first
         $request->validate([
-            'name' => 'required',
+            // 'name' => 'required',
             'email' => 'required|email',
             'phone_number' => 'required|digits:10',
             'bid_amount' => 'required',
@@ -24,7 +24,7 @@ class UserController extends Controller
             'car_id' => 'required',
         ],
         [
-            'name.required' => 'Name is required',
+            // 'name.required' => 'Name is required',
             'email.required' => 'Email is required',
             'email.email' => 'Email is invalid',
             'phone_number.required' => 'Phone number is required',
@@ -49,7 +49,7 @@ class UserController extends Controller
             
             //check if the credentials put in are the same as the user's credentials
             if ($user->email != $request->email) {
-                return redirect()->back()->with('error', 'You are already logged in. Please use your email to place a bid');
+                return redirect()->back()->with('error', 'You are already logged in as another user. Please use your email to place a bid, or log in with the correct email');
             }
             
             $user_id = $user->id;
@@ -60,7 +60,10 @@ class UserController extends Controller
             // dd($res);
 
             if($res['success']) {
-                return redirect('/admin')->with('success', $res['message']);
+                $transaction_id = $res['transaction_id'];
+                return redirect("/payment-processing/$transaction_id")->with('success', $res['message']);
+                // return redirect()->back()->with('success', $res['message']);
+
             } else {
                 return redirect()->back()->with('error', $res['message']);
             }
@@ -260,11 +263,20 @@ class UserController extends Controller
             $phone_number = $bid_params['phone_number'];
 
             $bid_controller = new BidController();
-            $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id, $phone_number);
+            $res = $bid_controller->place_bid($auction_id, $bid_amount, $user_id, $car_id, $phone_number);
+
+            if($res['success']) {
+                $transaction_id = $res['transaction_id'];
+                return redirect("/payment-processing/$transaction_id")->with('success', $res['message']);
+                // return redirect()->back()->with('success', $res['message']);
+
+            } else {
+                return redirect()->back()->with('error', $res['message']);
+            }
 
 
 
-            return redirect()->route('listings')->with('success', 'Login successful and bid placed');
+            // return redirect()->route('listings')->with('success', 'Login successful and bid placed');
         } else {
             return redirect()->back()->with('error', 'Login failed');
         }

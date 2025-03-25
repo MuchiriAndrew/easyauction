@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MpesaSTKC2B {
     public function stk_push($phone, $amount, $auction_id, $credentials, $callbackUrl, $env)
@@ -12,7 +13,7 @@ class MpesaSTKC2B {
         $shortCode = $credentials['shortCode']; // Test Shortcode (use your own for production)
         $passkey = $credentials['passkey']; // From Safaricom portal
         $accountReference = $credentials['accountReference'] == '' ? "$auction_id" : $credentials['accountReference']; // This is anything that helps identify the specific transaction       
-        // $callbackUrl = 'https://76bd-102-68-76-239.ngrok-free.app/yobazar/index.php/wc-api/callback';
+        $callbackUrl = env('MPESA_CALLBACK_URL'); // This is the URL where the results from the Safaricom API will be sent to
 
 
         //get the first char of the phone which would be a 0 and replace it with 254
@@ -39,11 +40,15 @@ class MpesaSTKC2B {
             'PartyB' => $shortCode, //this is the paybill number of the receiver
             'PhoneNumber' => $phone,
             'CallBackURL' => $callbackUrl,
+            // 'CallBackURL' => 'https://44c1-154-152-219-169.ngrok-free.app/mpesa-callback',
             'AccountReference' => $accountReference,
             'TransactionDesc' => "Payment for order $auction_id"
             //pass the order id where it can be accessed in the callback
 
         );
+
+        //log the req
+        Log::info(json_encode($data));
 
         
 
@@ -64,24 +69,10 @@ class MpesaSTKC2B {
         // Display the response from Safaricom API
         //get the MerchantRequestID and add it to the order's meta data
         $result = json_decode($response, true);
+        
+        Log::info(json_encode($result));
 
         
-        // $merchantRequestID = $result['MerchantRequestID'];
-        // dd($result);
-        // // update_post_meta($order_id, '_merchant_request_id', $merchantRequestID);
-        // $order = wc_get_order($order_id);
-        // $order->update_meta_data('_merchant_request_id', $merchantRequestID);
-        // $order->save();
-        
-        // //update the ordermeta with the merchantRequestID
-
-
-        // //update status to processing
-        // $order = wc_get_order($order_id);
-        // $order->update_status('processing');
-
-
-
         return $result;
     }
 

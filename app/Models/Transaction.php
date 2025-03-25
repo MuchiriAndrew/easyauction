@@ -19,6 +19,8 @@ class Transaction extends Model
         'transaction_details',
         'amount',
         'payment_status',
+        'merchant_request_id',
+        'callback',
         'transaction_date',
     ];
 

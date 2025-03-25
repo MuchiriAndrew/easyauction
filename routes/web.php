@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\BidController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\UserController;
@@ -29,7 +31,11 @@ Route::post('/send-account-confirmation', [MailController::class, 'sendAccountCo
 Route::post('/send-email-verification', [MailController::class, 'sendEmailVerification'])->name('send.email.verificaion');
 
 Route::post('/customer/register', [UserController::class, 'register'])->name('register');
+Route::post('/mpesa-callback', [BidController::class, 'callback']);
 
+Route::get('/payment-processing/{id}', [PagesController::class, 'payment_processing'])->name('payment.processing');
+Route::get('/poll-transaction-status/{id}', [BidController::class, 'poll_transaction_status']);
+Route::get('/mpesa-payment-failed/{id}', [PagesController::class, 'mpesa_payment_failed']);
 
 
 Route::get('/login', [UserController::class, 'login'])->name('login');

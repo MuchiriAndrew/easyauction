@@ -8,8 +8,13 @@ ENV PHP_MAX_EXECUTION_TIME 110
 # Copy the project files into the container
 COPY . /production/easyauction
 
+# Set the laravel web folder
+ARG WEB_PATH=/production/easyauction/public
+ENV WEB_DOCUMENT_ROOT=$WEB_PATH
+
 # set the correct laravel app foler
-WORKDIR /production/easyauction
+ARG LARAVEL_PATH=/production/easyauction
+WORKDIR $LARAVEL_PATH
 
 # # Install Node.js and npm
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
@@ -41,7 +46,6 @@ RUN npm install && npm run build
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     composer install
 
-
 # Copy the project files into the container
 COPY . .
 
@@ -60,6 +64,7 @@ ARG DB_PORT
 ARG DB_DATABASE
 ARG DB_USERNAME
 ARG DB_PASSWORD
+
 ARG MPESA_CONSUMER_KEY='Xb21W9yMyo3ifgaAdoKyTAnS6ibgZkrk1RClzcuJ2MrtWEvN'
 ARG MPESA_CONSUMER_SECRET='Iy6se2lcCl4iGK6wBvuUNecwjvlXy3oQyR1pKZr7IhCq6HhZLWyTU0GrbI491J8y'
 ARG MPESA_SHORTCODE='4265572'

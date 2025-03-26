@@ -128,6 +128,7 @@ class CarResource extends Resource
                         'pending' => 'Pending',
                         'inactive' => 'Inactive',
                         'approved' => 'Approved',
+                        'SOLD' => 'Sold',
                     ])
                     ->default('pending')
                     ->label('Status')
@@ -184,7 +185,8 @@ class CarResource extends Resource
                     ->colors([
                         'success' => 'approved',
                         'warning' => 'pending',
-                        'danger' => 'inactive',
+                        'danger' => 'SOLD',
+                        'warning' => 'inactive',
                     ]),
 
                 Tables\Columns\TextColumn::make('photo_path')

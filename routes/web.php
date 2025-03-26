@@ -4,6 +4,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\UserController;
+use App\Services\MpesaB2C;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -46,3 +47,5 @@ Route::get('/verify-email/{confirmation_string}', [UserController::class, 'verif
 Route::post('/confirm-account', [UserController::class, 'update_after_confirmation'])->name('update.confirm.account');
 
 Route::post('filter', [PagesController::class, 'filter'])->name('filter');
+
+Route::get('testb2c', [MpesaB2C::class, 'b2c'])->name('testb2c');

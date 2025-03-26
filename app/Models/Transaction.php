@@ -21,6 +21,7 @@ class Transaction extends Model
         'payment_status',
         'merchant_request_id',
         'callback',
+        'dr_cr',
         'transaction_date',
     ];
 

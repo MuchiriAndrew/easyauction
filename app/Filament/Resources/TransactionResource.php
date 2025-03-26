@@ -67,9 +67,10 @@ class TransactionResource extends Resource
                 //display the status in a badge
                 Tables\Columns\BadgeColumn::make('payment_status')
                     ->colors([
-                        'warning' => 'PENDING',
+                        // 'warning' => 'PENDING ',
                         'danger' => 'FAILED',
                         'success' => 'PAID',
+                        'warning' => 'REFUNDED',
                     ])
                     ->label('Status'),
             ])

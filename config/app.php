@@ -70,7 +70,10 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC +3',
+
+    //set the time to gmt+3...the time in kenya
+    'timezone' => 'Africa/Nairobi',
 
     /*
     |--------------------------------------------------------------------------

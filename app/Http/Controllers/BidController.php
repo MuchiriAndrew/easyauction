@@ -130,6 +130,7 @@ class BidController extends Controller
                     ->where('user_id', $user_id)
                     ->where('car_id', $car_id)
                     ->whereNot('payment_status', 'like', '%FAILED%')
+                    ->whereNot("dr_cr", "CR")
                     ->get();
                 if (count($transactions) > 0) {
 
@@ -182,6 +183,7 @@ class BidController extends Controller
                             ->where('car_id', $car_id)
                             ->where('user_id', $prev_highest_bid_user_id)
                             ->where('payment_status', 'PAID')
+                            ->whereNot("dr_cr", "CR")
                             ->get();
                         foreach ($transaction as $transaction) {
                             $status = $transaction->payment_status;
@@ -266,6 +268,7 @@ class BidController extends Controller
             //                             ->where('auction_id', $auction_id)
             //                             ->where('car_id', $car_id)
             //                             ->where('payment_status', 'like', '%REFUND%')
+            //                              ->whereNot("dr_cr", "CR")
             //                             ->get();
             // foreach ($transactions as $transaction) {
             //     $transaction->payment_status = 'PAID';

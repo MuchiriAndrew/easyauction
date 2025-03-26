@@ -12,10 +12,10 @@ class Payment extends Model
     protected $table = 'payments';
 
     protected $fillable = [
-        'transaction_id',
-        'payment_method',
+        'vendor_id',
+        'auction_id',
+        'car_id',
         'payment_status',
-        'payment_date',
         'amount',
     ];
 }

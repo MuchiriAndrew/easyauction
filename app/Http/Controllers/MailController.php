@@ -7,6 +7,8 @@ use App\Mail\AccountConfirmation;
 use App\Mail\BidPlaced;
 use Illuminate\Http\Request;
 use App\Mail\ContactForm;
+use App\Mail\UserWinner;
+use App\Mail\VendorWinner;
 use App\Mail\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
 
@@ -101,5 +103,52 @@ class MailController extends Controller
 
         $res = Mail::to($email)->send(new BidPlaced($details));
         return $res;
+    }
+
+    public function sendUserWinner($auction, $car, $user, $email, $bid) {
+
+        $username = $user->name;
+        $car_name = $car->make . ' ' . $car->model;
+        $auction_name = $auction->name;
+        $vendor = $car->vendor;
+        $vendor_email = $vendor->email;
+        $vendor_phone = $vendor->phone_number;
+
+        $details = [
+            'username' => $username,
+            'car_name' => $car_name,
+            'auction_name' => $auction_name,
+            'bid_amount' => $bid->amount,
+            'vendor_email' => $vendor_email,
+            'vendor_phone' => $vendor_phone
+        ];
+
+        // $res = Mail::to($email)->send(new UserWinner($details));
+        $res = Mail::to("kariukia225@gmail.com")->send(new UserWinner($details));
+        
+    }
+    public function sendVendorWinner($auction, $car, $user, $email, $bid) {
+        $username = $user->name;
+        $car_name = $car->make . ' ' . $car->model;
+        $auction_name = $auction->name;
+        $bid_amount = $bid->amount;
+        
+        $customer = $bid->user;
+        $user_email = $customer->email;
+        $user_phone = $customer->phone_number;
+    
+        $details = [
+            'username' => $username,
+            'car_name' => $car_name,
+            'auction_name' => $auction_name,
+            'bid_amount' => $bid_amount,
+            'customer_name' => $customer->name,
+            'customer_email' => $user_email,
+            'customer_phone' => $user_phone
+        ];
+    
+        // $res = Mail::to($email)->send(new VendorWinner($details));
+        $res = Mail::to("kariukia225@gmail.com")->send(new VendorWinner($details));
+
     }
 }

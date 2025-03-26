@@ -40,15 +40,14 @@
             <div class="light-line"></div>
             <p>{{ $description }}</p>
             <p class="text-green-400">Auction Ends In: {{ $end_time }} </p>
-            <p class="text-green-400">Highest Bid: {{ $highest }} </p>
 
-            {{-- <div class="car-info">
-                <ul>
-                    <li><i class="icon-gaspump"></i>{{ $fuel }}</li>
-                    <li><i class="icon-car"></i>{{ $type }}</li>
-                    <li><i class="icon-road2"></i>{{ $mileage }}</li>
-                </ul>
-            </div> --}}
+            @if($end_time < now())
+                <p class="text-red-400">Auction Ended</p>
+                @else
+                {{-- <p class="text-green-400">Auction Open</p> --}}
+                <div class="text-green-400">Auction Open</div>
+                @endif
+    
         </div>
 
     </div>

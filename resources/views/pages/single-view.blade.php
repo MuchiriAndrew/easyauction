@@ -49,7 +49,7 @@
                             <ul class="tab-links">
                                 <li class="active"><a href="#tab1">VEHICLE OVERVIEW</a></li>
 
-                                <li><a href="#tab4">CONTACT DEALER</a></li>
+                                <li><a href="#tab4">CONTACT VENDOR</a></li>
                             </ul>
 
 
@@ -121,6 +121,7 @@
                                 <li><span>Fuel Type:</span>{{ strtoupper($car->fuel_type) }}</li>
                                 <li><span>Transmission:</span>{{ strtoupper($car->transmission) }}</li>
                                 <li><span>Color:</span>{{ strtoupper($car->color) }}</li>
+                                <li><span>Auction:</span>{{$highest_bid->auction->name }}</li>
                                 @if($highest_bid)
                                 <li><span>Highest Bid:</span>KSH {{number_format($highest_bid->amount ?? 0)}}</li>
                                 @else

@@ -35,7 +35,11 @@ class CheckAuctionStatus extends Command
         //once an auction is closed the function will also notify the winner and the seller!!
 
         //get all auctions that are pending/open...we have no need to check closed auctions
-        $auctions = Auction::where('status', 'pending')->orWhere('status', 'open')->get();
+        $auctions = Auction::where('status', 'pending')
+                            ->orWhere('status', 'open')
+                            ->orderBy('id', 'desc')
+                            ->take(5)
+                            ->get();
 
         if (count($auctions) > 0) {
             foreach ($auctions as $auction) {

@@ -5,8 +5,13 @@
 @section('content')
 
     @php
-        // dd($car ,$vendor);
+        $features = $car->features;
+        $car_photos = $car->photo_path;
+        // dd($car ,$vendor, $features, $car_photos);
+
         $user = auth()->user();
+        $auction = \App\Models\Auction::whereRaw("JSON_CONTAINS(car_ids, '\"$car->id\"')")->first();
+
         // dd($user);
     @endphp
 
@@ -30,17 +35,30 @@
                     </div>
 
 
-                    <div class="flexslider">
-                        <ul class="slidesr">
-                            <img id="featured-image" src="{{ asset("storage/$car->photo_path") }}" alt="" />
-                            <style>
-                                #featured-image {
-                                    /* height:500px; */
-                                    width: 100%;
-                                }
-                            </style>
+                   
 
-                        </ul>
+                    
+                    <div class="swiper auction-carousel rounded-t-md">
+                        
+                        <div class="swiper-wrapper">
+                            @foreach ($car_photos as $photoPath)
+                                <div class="swiper-slide">
+                                    <img id="featured-image" src="{{ asset('storage/' . $photoPath) }}" alt="Auction Image"
+                                    class="w-full h-full object-cover">
+                                    <style>
+                                        #featured-image {
+                                            /* height:500px; */
+                                            width: 100%;
+                                        }
+                                    </style>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- Add Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
                     </div>
 
 
@@ -71,31 +89,11 @@
                             <div class="more-info">
                                 <div class="row">
                                     <div class="first-info col-md-4">
-                                        <h4>Enterainment</h4>
+                                        <h4>Vehicle Features</h4>
                                         <ul>
-                                            <li><i class="fa fa-check"></i>Central Locking</li>
-                                            <li><i class="fa fa-check"></i>Automatic Air Conditioning</li>
-                                            <li><i class="fa fa-check"></i>Full Leather Interior</li>
-                                            <li><i class="fa fa-check"></i>Electric Heated Seats</li>
-                                            <li><i class="fa fa-check"></i>Navigation GPS Multimedia</li>
-                                        </ul>
-                                    </div>
-                                    <div class="second-info col-md-4">
-                                        <h4>exterior features</h4>
-                                        <ul>
-                                            <li><i class="fa fa-check"></i>Parking Sensors</li>
-                                            <li><i class="fa fa-check"></i>Double Exhaust</li>
-                                            <li><i class="fa fa-check"></i>Electric Mirrors</li>
-                                            <li><i class="fa fa-check"></i>Manifacturing Year 2015</li>
-                                            <li><i class="fa fa-check"></i>Full Service History</li>
-                                        </ul>
-                                    </div>
-                                    <div class="third-info col-md-4">
-                                        <h4>interior features</h4>
-                                        <ul>
-                                            <li><i class="fa fa-check"></i>ABS</li>
-                                            <li><i class="fa fa-check"></i>Xenon Headlights</li>
-                                            <li><i class="fa fa-check"></i>Immobilizer</li>
+                                            @foreach($features as $feature)
+                                                <li><i class="fa fa-check"></i>{{ ucwords(str_replace("_"," ",$feature)) }}</li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -121,7 +119,7 @@
                                 <li><span>Fuel Type:</span>{{ strtoupper($car->fuel_type) }}</li>
                                 <li><span>Transmission:</span>{{ strtoupper($car->transmission) }}</li>
                                 <li><span>Color:</span>{{ strtoupper($car->color) }}</li>
-                                <li><span>Auction:</span>{{$highest_bid->auction->name }}</li>
+                                <li><span>Auction:</span>{{$auction->name ?? '' }}</li>
                                 @if($highest_bid)
                                 <li><span>Highest Bid:</span>KSH {{number_format($highest_bid->amount ?? 0)}}</li>
                                 @else

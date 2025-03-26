@@ -41,9 +41,8 @@ section {
 }
 p {
   font-family: 'Roboto', sans-serif;
-  font-size: 13px;
+  /* font-size: 13px; */
   line-height: 22px;
-  /* color: #888888; */
 }
 #sub-header {
   width: 100%;
@@ -1652,13 +1651,14 @@ footer .gallery .gallery-item img {
   font-family: 'Montserrat', sans-serif;
   text-align: center;
   line-height: 36px;
-  padding: 0px 12px;
+  padding: 0px 5px;
   display: inline-block;
-  margin-top: -15px;
-  margin-right: -15px;
-  float: right;
-  background-color: #f4c23d;
-  font-size: 13px;
+  /* margin-top: -15px;
+  margin-right: -15px; */
+  /* float: right; */
+  background-color: #c7dcf3;
+  border-radius: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   color: #222222;
   font-weight: 700;
@@ -3539,7 +3539,7 @@ footer .gallery .gallery-item img {
   cursor: pointer;
   display: inline-block;
   zoom: 1;
-  *display: inline;
+  display: inline;
   /*IE7 life-saver */
 }
 .owl-theme .owl-controls .owl-page a {

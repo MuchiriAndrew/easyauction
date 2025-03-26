@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Arr;
 
 class CarResource extends Resource
 {
@@ -135,14 +135,64 @@ class CarResource extends Resource
                     ->visible(fn() => Auth::user()->getRoleAttribute() === 'admin'),
 
 
-                Forms\Components\Textarea::make('description')
-                    ->label('Description'),
+
+                    //do a multiple select form for car features
+                Forms\Components\Select::make('features')
+                ->multiple()
+                ->options([
+                    'air_conditioning' => 'Air Conditioning',
+                    'power_steering' => 'Power Steering',
+                    'power_windows' => 'Power Windows',
+                    'power_locks' => 'Power Locks',
+                    'anti_lock_brakes' => 'Anti-Lock Brakes',
+                    'driver_airbag' => 'Driver Airbag',
+                    'passenger_airbag' => 'Passenger Airbag',
+                    'side_airbags' => 'Side Airbags',
+                    'alarm' => 'Alarm',
+                    'immobilizer' => 'Immobilizer',
+                    'cruise_control' => 'Cruise Control',
+                    'navigation_system' => 'Navigation System',
+                    'cd_player' => 'CD Player',
+                    'mp3_player' => 'MP3 Player',
+                    'bluetooth' => 'Bluetooth',
+                    'back_up_camera' => 'Back-up Camera',
+                    'sunroof' => 'Sunroof',
+                    'moonroof' => 'Moonroof',
+                    'power_seats' => 'Power Seats',
+                    'heated_seats' => 'Heated Seats',
+                    'leather_seats' => 'Leather Seats',
+                    'keyless_entry' => 'Keyless Entry',
+                    'keyless_start' => 'Keyless Start',
+                    'remote_start' => 'Remote Start',
+                    'tow_package' => 'Tow Package',
+                    'roof_rack' => 'Roof Rack',
+                    'alloy_wheels' => 'Alloy Wheels',
+                    'third_row_seats' => 'Third Row Seats',
+                    'parking_sensors' => 'Parking Sensors',
+                    'blind_spot_monitor' => 'Blind Spot Monitor',
+                    'lane_departure_warning' => 'Lane Departure Warning',
+                    'adaptive_cruise_control' => 'Adaptive Cruise Control',
+                    'apple_carplay' => 'Apple CarPlay',
+                    'android_auto' => 'Android Auto',
+                    'wifi_hotspot' => 'WiFi Hotspot',
+                    'wireless_phone_charging' => 'Wireless Phone Charging',
+                    'hands_free_liftgate' => 'Hands-Free Liftgate',
+                    'power_sliding_doors' => 'Power Sliding Doors',
+                    'power_liftgate' => 'Power Liftgate',
+                    'heated_steering_wheel' => 'Heated Steering Wheel',
+                    'heated_mirrors' => 'Heated Mirrors',
+                ])
+                ->label('Features')
+                ->default([]),
 
 
+                
                 Forms\Components\FileUpload::make('photo_path')
                     ->label('Car Image')
+                    ->required()
                     ->directory('car-images')
                     ->image()
+                    ->multiple()
                     ->imageResizeMode('cover')
                     ->imageCropAspectRatio('16:9')
                     ->visibility('public')
@@ -154,8 +204,8 @@ class CarResource extends Resource
                         return Storage::url($file);
                     }),
 
-
-
+                    Forms\Components\Textarea::make('description')
+                    ->label('Description'),
 
 
 
@@ -163,6 +213,9 @@ class CarResource extends Resource
                 Forms\Components\Hidden::make('vendor_id')
                     ->default(auth()->id()),
 
+
+                
+            
             ]);
     }
 
@@ -191,7 +244,7 @@ class CarResource extends Resource
 
                 Tables\Columns\TextColumn::make('photo_path')
                     ->label('Vehicle Image')
-                    ->url(fn($record) => asset('storage/' . $record->photo_path))
+                    ->url(fn($record) => asset('storage/' . Arr::first($record->photo_path))) // Use Arr::first to get the first element
                     ->formatStateUsing(fn($state) => 'View Image'),
 
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),

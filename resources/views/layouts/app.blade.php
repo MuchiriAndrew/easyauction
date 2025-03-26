@@ -62,7 +62,7 @@
 
         .swiper-button-next,
         .swiper-button-prev {
-            display: none;
+            /* display: none; */
             color: #ffffff;
             /* background: rgba(0,0,0,0.5); */
             /* padding: 30px 20px; */

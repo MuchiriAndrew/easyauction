@@ -64,11 +64,20 @@
 
                             @foreach ($cars as $ind=>$car)
                                 @php
+                                // dd($ind, $car, $cars);
+                                $id = $car->id;
                                     // $car = $auction->car;
-                                    // dd($car->photo_path);
+                                    // $auction = $car->auction;
+
+                                    //find an auction where the car id is in the json car_ids field
+                                    // $auction = \App\Models\Auction::whereJsonContains('car_ids', $car->id)->first();
+                                    $auction = \App\Models\Auction::whereRaw("JSON_CONTAINS(car_ids, '\"$id\"')")->first();
+                                    // $auction = \App\Models\Auction::where('id', 4)->first() ?? [];
+                                    // dd($car->photo_path, $auction);
+
                                 @endphp
 
-                                <x-vehicle-card :image="'storage/' . $car->photo_path" :link="'/single-view/' . $car->id" :title="$car->make . ' ' . $car->model" :description="$car->description"
+                                <x-vehicle-card :auction="$auction"  :image="'storage/' . $car->photo_path[0]" :link="'/single-view/' . $car->id" :title="$car->make . ' ' . $car->model" :description="$car->description"
                                     :fuel="$car->fuel_type" :type="$car->style" :mileage="$car->mileage" :highest="$auction->current_bid ?? '0.00'" />
                             @endforeach
 

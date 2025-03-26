@@ -23,6 +23,12 @@ class Car extends Model
         'description',
         'photo_path',
         'status',
+        'features',
+    ];
+
+    protected $casts = [
+        'features' => 'array',
+        'photo_path' => 'array',
     ];
 
     //define relationship with auction
@@ -35,5 +41,11 @@ class Car extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class, 'vendor_id', 'id');
+    }
+
+    //relationship with features
+    public function features()
+    {
+        return $this->hasMany(Feature::class);
     }
 }

@@ -45,6 +45,8 @@ class CreateUser extends CreateRecord
         ];
 
         // dd($email_details, $user);
+
+        // dd($email_details, $user);
         //call the MailController to send the email
         $mail_controller = new MailController();
         $mail_controller->sendEmailVerification($email_details);

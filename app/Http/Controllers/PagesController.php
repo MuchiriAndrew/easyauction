@@ -23,7 +23,10 @@ class PagesController extends Controller
 
     public function auction_listings($id) {
         $auction = Auction::find($id);
-        return view('pages.auctions-single', compact('auction'));
+        $highest_bids = Bid::where('auction_id', $auction->id)
+                            ->where("status", "like", "%HIGHEST%")
+                            ->get();
+        return view('pages.auctions-single', compact('auction', 'highest_bids'));
     }
 
     public function single_view($id) {

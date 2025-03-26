@@ -11,6 +11,8 @@ Route::get('/', function () {
     //return view('welcome');
     //redirect to home page
     return redirect()->route('listings');
+
+    // return view('pages.home');
 });
 
 

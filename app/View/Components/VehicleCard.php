@@ -18,6 +18,7 @@ class VehicleCard extends Component
     public $mileage;
     public $end_time;
     public $highest;
+    public $auction;
 
     public function __construct(
         $image = 'assets/images/featured-vehicle.jpg',
@@ -29,7 +30,8 @@ class VehicleCard extends Component
         $type = 'Car Type',
         $mileage = '0',
         $end_time = '2021-12-31 23:59:59',
-        $highest = '0'
+        $highest = '0',
+        $auction = null
     ) {
         $this->image = $image;
         $this->link = $link;
@@ -41,6 +43,7 @@ class VehicleCard extends Component
         $this->mileage = $mileage;
         $this->end_time = $end_time;
         $this->highest = $highest;
+        $this->auction = json_decode($auction);
     }
 
     public function render()

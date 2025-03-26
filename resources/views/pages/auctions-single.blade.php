@@ -24,6 +24,8 @@
     }
 
     $count = count($cars);
+    // dd($highest_bids);
+    
     
 @endphp
 
@@ -56,11 +58,13 @@
                         @foreach ($cars as $ind=>$car)
                             @php
                                 // $car = $auction->car;
-                                // dd($car->photo_path);
+                                // dd($car->photo_path, $auction);
+                                $highest_bid = $highest_bids->where('car_id', $car->id)->first()->amount ?? 0;
+                                // dd($highest_bid);
                             @endphp
 
-                            <x-vehicle-card :image="'storage/' . $car->photo_path" :link="'/single-view/' . $car->id" :title="$car->make . ' ' . $car->model" :description="$car->description"
-                                :fuel="$car->fuel_type" :type="$car->style" :mileage="$car->mileage" :highest="$auction->current_bid ?? '0.00'" />
+                            <x-vehicle-card :auction="json_encode($auction)" :image="'storage/' . $car->photo_path[0]" :link="'/single-view/' . $car->id" :title="$car->make . ' ' . $car->model" :description="$car->description"
+                                :fuel="$car->fuel_type" :type="$car->style" :mileage="$car->mileage" :highest="$highest_bid ?? '0.00'" />
                         @endforeach
 
                     </div>

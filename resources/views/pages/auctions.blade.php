@@ -48,16 +48,23 @@
                                 }
                                    
                                 @endphp
+<div class=".auctioncard">
+    <x-auction-card :link="'/auctions/' . $auction->id" :auction="$auction" :cars="$cars"   />
+</div>
 
-                                <x-auction-card :link="'/auctions/' . $auction->id" :auction="$auction" :cars="$cars"   />
-                                {{-- <x-auction-card :link="'/auctions/' . $auction->id" :auction="$auction" :cars="$cars"   /> --}}
-                    
-                            @endforeach
+
+@endforeach
 
                         </div>
                     </div>
                    
                 </div>
+
+                <style>
+                    /* .auctioncard {
+                        margin: 50px !important;
+                    } */
+                </style>
                 {{-- <div id="sidebar" class="col-md-3">
                     <form action="/filter" method="POST" class="sidebar-content">
                         @csrf

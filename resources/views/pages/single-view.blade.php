@@ -132,6 +132,9 @@
                         <div class="head-side-bar">
                             <h4>SUBMIT BID</h4>
                         </div>
+                        @if($auction->status == 'closed')
+                            <p class="text-red-600 text-center p-5">You can no longer place bids on this vehicle because its auction has been closed</p>
+                        @else
                         <form action="/customer/register" method="POST" class="contact-form">
                             @csrf
                             <p>Fill in your details here to submit your bid</p>
@@ -178,6 +181,7 @@
                                 </button>
                             </div>
                         </form>
+                        @endif
                         <div class="subhead-side-bar">
                             <h4>Contact the Seller</h4>
                         </div>

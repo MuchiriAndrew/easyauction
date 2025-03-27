@@ -14,8 +14,8 @@
                     <ul>
                         <li><a href="/auctions"><i class="fa fa-caret-right"></i>Auctions</a></li>
                         <li><a href="/listings"><i class="fa fa-caret-right"></i>Listings</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Terms &amp; Conditions</a></li>
-                        <li><a href="#"><i class="fa fa-caret-right"></i>Contact</a></li>
+                        {{-- <li><a href="#"><i class="fa fa-caret-right"></i>Terms &amp; Conditions</a></li> --}}
+                        {{-- <li><a href="#"><i class="fa fa-caret-right"></i>Contact</a></li> --}}
                         
                     </ul>
                    

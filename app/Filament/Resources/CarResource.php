@@ -36,6 +36,7 @@ class CarResource extends Resource
                 Forms\Components\Select::make('style')
                     ->options([
                         'saloon' => 'Saloon',
+                        'station-wagon' => 'Station Wagon',
                         'suv' => 'SUV',
                         'hatchback' => 'Hatchback',
                         'coupe' => 'Coupe',
@@ -91,6 +92,9 @@ class CarResource extends Resource
                     ->label('Year'),
                 Forms\Components\TextInput::make('vin')
                     ->unique(ignoreRecord: true)
+                    //VALIDATE TO THIS FORMAT KCD 536T
+                    // ->pattern('[A-Z]{3}\s\d{3}[A-Z]{1}')
+                    ->required()
                     ->label('VIN (Vehicle Identification Number)'),
                 //ADD PLACEHOLDER FOR MILEAGE
                 Forms\Components\TextInput::make('mileage')
@@ -106,7 +110,7 @@ class CarResource extends Resource
                         ->pattern('money'))
                     ->placeholder('Insert mileage in kilometers')
                     ->extraAttributes(['oninput' => 'formatNumber(this)'])
-                    ->label('Mileage'),
+                    ->label('Mileage (in KM)'),
 
 
                 Forms\Components\TextInput::make('price')
@@ -120,7 +124,7 @@ class CarResource extends Resource
                         ])
                         ->pattern('money'))
                     ->required()
-                    ->label('Price')
+                    ->label('Starting Price (A bid can not go lower than this)')
                     ->extraAttributes(['oninput' => 'formatNumber(this)']),
 
                 Forms\Components\Select::make('status')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\BidPlaced;
 use App\Models\Bid;
+use App\Models\Car;
 use App\Models\Transaction;
 use App\Services\MpesaSTKC2B;
 use Illuminate\Http\Request;
@@ -17,6 +18,18 @@ class BidController extends Controller
 
         //check that there is no higher bid than the one being being placed now
         $previous_highest_bid = Bid::where('auction_id', $auction_id)->where('car_id', $car_id)->where('status', 'HIGHEST')->first();
+
+        $car = Car::find($car_id);
+
+        //make sure that the bid placed is higher than the reserve price
+        $reserve_price = $car->price;
+        if ($bid_amount < $reserve_price) {
+            return [
+                'success' => false,
+                'message' => 'The bid amount is lower than the reserve price which is '. number_format($car->price) .' Please place a higher bid',
+            ];
+        }
+        
 
         if (!$previous_highest_bid) {
             $previous_highest_bid_amount = 0;
@@ -109,11 +122,16 @@ class BidController extends Controller
         $request = json_decode($request->getContent());
         //get the merchant request idfrom the request
         $merchant_request_id = $request->Body->stkCallback->MerchantRequestID;
-        $resultCode = $request->Body->stkCallback->ResultCode;
+        // $resultCode = $request->Body->stkCallback->ResultCode;
         // dd($request, $merchant_request_id, $resultCode, "here");
         // $checkout_request_id = $request->Body->stkCallback->CheckoutRequestID;
 
 
+        if(env('MPESA_SIMULATE_SUCCESS') == 'true'){
+            $resultCode = 0;
+        } else {
+            $resultCode = $request->Body->stkCallback->ResultCode;
+        }
         if ($resultCode == 0) {
             // dd("resultCode is 0");
             //look for a transaction with the merchant request id

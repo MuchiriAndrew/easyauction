@@ -51,3 +51,4 @@ Route::post('/confirm-account', [UserController::class, 'update_after_confirmati
 Route::post('filter', [PagesController::class, 'filter'])->name('filter');
 
 Route::get('testb2c', [MpesaB2C::class, 'b2c'])->name('testb2c');
+Route::get('testemail', [MailController::class, 'sendUserWinner']);

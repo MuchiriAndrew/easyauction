@@ -32,13 +32,18 @@ class AuctionResource extends Resource
                 //replace this select with a multiple select of multiple cars, i want to be able to select multiple cars for one auction
                 Forms\Components\Select::make('car_ids')
                     ->multiple()
-                    ->options(\App\Models\Car::all()->mapWithKeys(function ($car) {
-                        $status = $car->status;
-                        if ($status == 'approved') {
+                    ->options(\App\Models\Car::all()->filter(function ($car) {
+                        return $car->status === 'approved';
+                    })->mapWithKeys(function ($car) {
+                        $auction = Auction::where(function ($query) use ($car) {
+                            $query->whereRaw("JSON_CONTAINS(car_ids, '\"$car->id\"')");
+                        })->first();
+                    
+                        if (!$auction) {
                             return [$car->id => "{$car->id}: {$car->make}-{$car->model}"];
-                        } else {
-                            return [];
                         }
+                    
+                        return [];
                     }))
                     ->required()
                     ->label('Car (Only approved vehicles will be available for auction)'),

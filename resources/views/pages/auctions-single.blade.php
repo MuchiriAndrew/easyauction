@@ -94,8 +94,8 @@
                             <li><span>Name:</span>{{strtoupper($name)}}</li>
                             <li><span>Description:</span>{{($description)}}</li>
                             <li><span>End Time:</span>{{strtoupper($end_time)}}</li>
-                            <li><span>Time Remaining:</span></li>
-                            <li><span>Current Bid:</span>{{strtoupper($current_bid)}}</li>
+                            {{-- <li><span>Time Remaining:</span></li>
+                            <li><span>Current Bid:</span>{{strtoupper($current_bid)}}</li> --}}
                             
                         </ul>
                     </div> 

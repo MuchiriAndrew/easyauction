@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Exports\TransactionsExport;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Auction;
@@ -12,8 +13,11 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionResource extends Resource
 {
@@ -75,13 +79,36 @@ class TransactionResource extends Resource
                     ->label('Status'),
             ])
             ->filters([
-                //
+                //create filters baseed on the status
+                Tables\Filters\SelectFilter::make('payment_status')
+                    ->options([
+                        'PENDING' => 'PENDING',
+                        'PAID' => 'PAID',
+                        'FAILED' => 'FAILED',
+                        'REFUNDED' => 'REFUNDED',
+                    ])
+                    ->label('Status'),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                // Action::make('export')
+                //     ->label('Export to Excel')
+                //     ->action(function () {
+                //         return Excel::download(new TransactionsExport, 'transactions.xlsx');
+                //     })
+                //     ->icon('heroicon-o-download'),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
+                BulkAction::make('export')
+                    ->label('Export Selected')
+                    ->action(function ($records) {
+                        // Handle both Collection and array of IDs
+                        $transactions = $records instanceof \Illuminate\Database\Eloquent\Collection
+                            ? $records
+                            : Transaction::whereIn('id', $records)->get();
+            
+                        return Excel::download(new TransactionsExport($transactions), 'selected-transactions.xlsx');
+                    })
+                    ->icon('heroicon-o-download'),
             ]);
     }
 

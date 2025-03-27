@@ -17,6 +17,7 @@ class PagesController extends Controller
 
     public function auctions() {
         $auctions = Auction::all();
+        // dd($auctions);
         $count = count($auctions);
         return view('pages.auctions', compact('auctions', 'count'));
     }
@@ -67,16 +68,16 @@ class PagesController extends Controller
         if($filter) {
             // dd($request->all());
             $parameters = $request->validate([
-                'make' => 'required',
-                'model' => 'required',
-                'style' => 'required',
-                'color' => 'required',
+                'make' => 'nullable',
+                'model' => 'nullable',
+                'style' => 'nullable',
+                'color' => 'nullable',
             ]);
+            $cars = [];
             foreach($auctions as $auction) {
                 $carIds = $auction->car_ids;
                 // $carIds = str_replace(' ', '', $carIds);
                 // $carIds = explode(',', $carIds);
-                $cars = [];
                 foreach($carIds as $carId) {
                     $car = Car::find($carId);
                     // dd($car, $parameters['color']);
@@ -94,18 +95,28 @@ class PagesController extends Controller
         } else {
             //get all auctions
             // $auctions = Auction::all();
-            foreach($auctions as $auction) {
+            $cars = [];
+            foreach($auctions as $ind=>$auction) {
+                // dd($auctions);
                 $carIds = $auction->car_ids;
 
+
+                
                 $carIds = str_replace(' ', '', $carIds);
-                $cars = [];
                 foreach($carIds as $carId) {
                     $car = Car::find($carId);
                     $cars[] = $car;
-                   
+                    
                 }
+                // if($ind == 0) {
+                //     // $carIds = str_replace('[', '', $carIds);
+                //     dd($carIds, $cars);
+                // }
                 
             }
+
+            // dd($cars);
+            
             $count = count($cars);
             return view('pages.listings', compact('cars', 'count'));
         }

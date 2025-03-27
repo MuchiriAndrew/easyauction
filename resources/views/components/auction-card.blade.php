@@ -15,6 +15,19 @@
 <a href="{{ $link }}">
     <div class="featured-item col-md-4">
 
+        <style>
+            .featured-item {
+                /* background: red; */
+                height: auto !important;
+                min-height: 400px !important;
+                max-height: 400px !important;
+               
+               
+                /* margin: 10px !important;
+                padding: 10px; */
+            }
+        </style>
+
 
         {{-- {{$image}} --}}
         {{-- do a photo carousel here --}}
@@ -27,10 +40,7 @@
                     </div>
                 @endforeach
             </div>
-            <!-- Add Navigation -->
-            {{-- <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div> --}}
-            <!-- Add Pagination -->
+            
             <div class="swiper-pagination"></div>
         </div>
         <div class="down-content rounded-b-md">
@@ -39,7 +49,8 @@
             </a>
             {{-- <span>{{ $price }}</span> --}}
             <div class="light-line"></div>
-            <p>{{ $description }}</p>
+            {{-- <p>{{ $description }}</p> --}}
+            <p>{{ \Illuminate\Support\Str::limit($description, 120) }}</p>
             {{-- <div>Auction Ends In: <div class="text-green-400 ">
                 {{ $end_time }} 
             </div>
@@ -47,11 +58,7 @@
             <span id="countdown-timer"></span>
 
 
-            {{-- @if ($end_time < now())
-                <div class="text-red-400 font-bold text-end auction-status">Auction Ended</div>
-            @else
-                <div class="text-green-400 font-bold text-end auction-status">Auction Open</div>
-            @endif --}}
+            
         </div>
 
     </div>
@@ -59,10 +66,11 @@
 
 <style>
     .down-content {
-        /* background: aqua; */
+        /* background: aqua !important; */
         height: auto !important;
         min-height: 200px !important;
-        border-bottom: 2px solid #f1f1f1;
+        border-bottom: 2px solid #f1f1f1 !important;
+        
 
     }
 
@@ -74,34 +82,42 @@
 
 <script>
     // Parse the end time from the server
-    const endTime = new Date("{{ $end_time }}").getTime();
+    var endTime = new Date("{{ $end_time }}").getTime();
     var status = "{{ $auction->status }}";
     console.log(status);
 
     // Function to update the countdown timer
     function updateCountdown() {
-        const now = new Date().getTime();
-        const timeLeft = endTime - now;
+        var now = new Date().getTime();
+        var timeLeft = endTime - now;
 
         if (timeLeft <= 0 || status == 'closed') {
             document.getElementById('countdown-timer').innerText = "Auction Ended";
             clearInterval(timerInterval); // Stop the timer
             return;
+        } else if (status == 'pending') {
+            document.getElementById('countdown-timer').innerText = "Auction Pending";
+            clearInterval(timerInterval); // Stop the timer
+            return;
         }
 
         // Calculate days, hours, minutes, and seconds
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
         // Update the countdown display
-        document.getElementById('countdown-timer').innerText =
-            `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        // document.getElementById('countdown-timer').innerText =
+            // `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            document.querySelectorAll('#countdown-timer').forEach((element) => {
+                element.innerText = `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            });
     }
 
     // Update the countdown every second
-    const timerInterval = setInterval(updateCountdown, 1000);
+    var timerInterval = setInterval(updateCountdown, 1000);
 
     // Initialize the countdown immediately
     updateCountdown();

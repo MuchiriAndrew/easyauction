@@ -86,6 +86,12 @@
             position: relative !important;
             bottom: 0px !important;
         }
+
+        main {
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 40px !important;
+        }
     </style>
 
     <title>@yield('title')</title>

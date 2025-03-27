@@ -51,10 +51,10 @@ class MailController extends Controller
 
         try {
             //uncomment once done with testing
-            $res = Mail::to($email)->send(new AccountConfirmation($email_details));
+            // $res = Mail::to($email)->send(new AccountConfirmation($email_details));
 
             
-            // $res = Mail::to("kariukia225@gmail.com")->send(new AccountConfirmation($email_details));
+            $res = Mail::to("kariukia225@gmail.com")->send(new AccountConfirmation($email_details));
             return $res;
         } catch (\Exception $e) {
             return back()->with('error', 'Email not sent');
@@ -102,7 +102,8 @@ class MailController extends Controller
             'bid_amount' => $bid_amount
         ];
 
-        $res = Mail::to($email)->send(new BidPlaced($details));
+        // $res = Mail::to($email)->send(new BidPlaced($details));
+        $res = Mail::to("kariukia225@gmail.com")->send(new BidPlaced($details));
         return $res;
     }
 

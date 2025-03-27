@@ -5,6 +5,7 @@
     @endphp --}}
 
     {{-- {{$image}} --}}
+    {{-- {{$auction->name}} --}}
         <img src="{{ asset($image) }}" alt="">
         <div class="down-content">
             <a href="{{ $link }}"><h2>{{ $title }}</h2></a>
@@ -15,7 +16,7 @@
             <p>{{ Str::limit($description, 150) }}</p>
             
             
-            <span class="countdown-timer" ></span>
+            {{-- <span class="countdown-timer" ></span> --}}
             
             <span class="highest">Highest Bid: KSH {{$highest}}  </span>
             {{-- <div class="car-info">
@@ -45,38 +46,59 @@
     }
 </style>
 
-<script>
+
+{{-- <script>
     (function () {
-        // Parse the end time and status for each auction
-        const timers = document.querySelectorAll('.countdown-timer');
+        // Parse the end time and status from the server
+        const endTime = new Date("{{ $auction->end_time }}").getTime();
+        const status = "{{ $auction->status }}";
+        const timerElementId = `countdown-timer-{{$auction->id}}`; // Use auction ID for unique element IDs
 
-        timers.forEach(timer => {
-            const endTime = new Date("{{ $auction->end_time }}").getTime();
+        console.log("Auction Status:", status);
+        console.log("End Time:", endTime);
 
-            const status = "{{ $auction->status }}";
-            // Function to update the countdown timer
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const timeLeft = endTime - now;
+        // Function to update the countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeLeft = endTime - now;
 
-                if (timeLeft <= 0 || status == 'closed') {
-                    timer.innerText = "Auction Ended";
-                    clearInterval(timerInterval); // Stop the timer
-                    return;
+            // Handle auction closed or expired
+            if (timeLeft <= 0 || status === 'closed') {
+                const timerElement = document.getElementById(timerElementId);
+                if (timerElement) {
+                    timerElement.innerText = "Auction Ended";
                 }
-
-                // Calculate days, hours, minutes, and seconds
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                // Update the countdown display
-                timer.innerText = `Time Left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                clearInterval(timerInterval); // Stop the timer
+                return;
             }
 
-            // Update the countdown every second
-            const timerInterval = setInterval(updateCountdown, 1000);
-        });
+            // Handle auction pending
+            if (status === 'pending') {
+                const timerElement = document.getElementById(timerElementId);
+                if (timerElement) {
+                    timerElement.innerText = "Auction Pending";
+                }
+                clearInterval(timerInterval); // Stop the timer
+                return;
+            }
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Update the countdown display
+            const timerElement = document.getElementById(timerElementId);
+            if (timerElement) {
+                timerElement.innerText = `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }
+
+        // Update the countdown every second
+        const timerInterval = setInterval(updateCountdown, 1000);
+
+        // Initialize the countdown immediately
+        updateCountdown();
     })();
-</script>
+</script> --}}

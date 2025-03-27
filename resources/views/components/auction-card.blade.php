@@ -11,6 +11,7 @@
         $photoPaths[] = $car->photo_path;
     }
     // dd($photoPaths, $link);
+    
 @endphp
 <a href="{{ $link }}">
     <div class="featured-item col-md-4">
@@ -55,7 +56,7 @@
                 {{ $end_time }} 
             </div>
             </div> --}}
-            <span id="countdown-timer"></span>
+            <span id="countdown-timer-{{$auction->name}}"></span>
 
 
             
@@ -81,44 +82,48 @@
 
 
 <script>
-    // Parse the end time from the server
-    var endTime = new Date("{{ $end_time }}").getTime();
-    var status = "{{ $auction->status }}";
-    console.log(status);
+    (function () {
+        const endTime = new Date("{{ $end_time }}").getTime();
+        const status = "{{ $auction->status }}";
+        const timerElementId = `countdown-timer-{{$auction->name}}`;
 
-    // Function to update the countdown timer
-    function updateCountdown() {
-        var now = new Date().getTime();
-        var timeLeft = endTime - now;
+        console.log("Auction Status:", status);
+        console.log("End Time:", endTime);
 
-        if (timeLeft <= 0 || status == 'closed') {
-            document.getElementById('countdown-timer').innerText = "Auction Ended";
-            clearInterval(timerInterval); // Stop the timer
-            return;
-        } else if (status == 'pending') {
-            document.getElementById('countdown-timer').innerText = "Auction Pending";
-            clearInterval(timerInterval); // Stop the timer
-            return;
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeLeft = endTime - now;
+
+            if (timeLeft <= 0 && status === 'closed') {
+                const timerElement = document.getElementById(timerElementId);
+                if (timerElement) {
+                    timerElement.innerText = "Auction Ended";
+                }
+                clearInterval(timerInterval);
+                return;
+            }
+
+            if (status === 'pending') {
+                const timerElement = document.getElementById(timerElementId);
+                if (timerElement) {
+                    timerElement.innerText = "Auction Pending";
+                }
+                clearInterval(timerInterval);
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            const timerElement = document.getElementById(timerElementId);
+            if (timerElement) {
+                timerElement.innerText = `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
         }
 
-        // Calculate days, hours, minutes, and seconds
-        var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        // Update the countdown display
-        // document.getElementById('countdown-timer').innerText =
-            // `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-            document.querySelectorAll('#countdown-timer').forEach((element) => {
-                element.innerText = `ENDS IN ${days}d ${hours}h ${minutes}m ${seconds}s`;
-            });
-    }
-
-    // Update the countdown every second
-    var timerInterval = setInterval(updateCountdown, 1000);
-
-    // Initialize the countdown immediately
-    updateCountdown();
+        const timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    })();
 </script>

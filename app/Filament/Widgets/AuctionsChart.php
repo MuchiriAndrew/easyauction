@@ -59,13 +59,15 @@ class AuctionsChart extends BarChartWidget
                 ],
             ],
         ];
-        } elseif ($role === 'customer'){
+        } 
+        elseif ($role === 'customer'){
             //do a bar chart for the number of auctions the customer has bidded on
+            // dd(Bid::where('user_id', $user->id)->pluck('auction_id')->unique()->count());
             return [
                 'datasets' => [
                     [
                         'label' => 'Auctions bidded on',
-                        'data' => Bid::where('user_id', $user->id)->pluck('auction_id')->unique()->count(),
+                        'data' => Bid::where('user_id', $user->id)->pluck('auction_id')->unique(),
                         'backgroundColor' => '#64ffda',
                         'borderColor' => '#0000',
                     ],
@@ -80,7 +82,8 @@ class AuctionsChart extends BarChartWidget
                 ],
                 
             ];
-        } elseif ($role === 'vendor'){
+        } 
+        elseif ($role === 'vendor'){
             //do a bar chart for the number of auctions the vendors cars have been in
             $cars = Car::where('vendor_id', $user->id)->pluck('id');
             $auctions = [];

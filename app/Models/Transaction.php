@@ -25,6 +25,10 @@ class Transaction extends Model
         'transaction_date',
     ];
 
+    protected $casts = [
+        'transaction_date' => 'date', // Cast transaction_date as a Carbon date instance
+    ];
+
     //relationship with auction
     public function auction() {
         return $this->belongsTo(Auction::class, 'auction_id', 'id');

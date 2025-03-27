@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Exports;
 
-use App\Models\Transaction;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -10,21 +10,16 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class TransactionsExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
+class UsersExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
 {
-    protected $transactions;
-
-    public function __construct(Collection $transactions = null)
-    {
-        $this->transactions = $transactions ?? Transaction::all();
-    }
-
     /**
+     * Fetch all users for export.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return $this->transactions;
+        return User::all();
     }
 
     /**
@@ -35,32 +30,26 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     public function headings(): array
     {
         return [
-            'Transaction ID',
-            'Auction Name',
-            'Car Make & Model',
-            'User Name',
-            'Amount',
-            'Payment Status',
-            'Transaction Date',
+            'User ID',
+            'Name',
+            'Email',
+            'Phone Number',
         ];
     }
 
     /**
      * Map the data for each row.
      *
-     * @param Transaction $transaction
+     * @param User $user
      * @return array
      */
-    public function map($transaction): array
+    public function map($user): array
     {
         return [
-            $transaction->id,
-            optional($transaction->auction)->name, // Fetch auction name
-            optional($transaction->car)->make . ' ' . optional($transaction->car)->model, // Fetch car make and model
-            optional($transaction->user)->name, // Fetch user name
-            number_format($transaction->amount, 2), // Format amount
-            $transaction->payment_status,
-            $transaction->transaction_date ? $transaction->transaction_date->format('Y-m-d') : null, // Format date
+            $user->id,
+            $user->name,
+            $user->email,
+            $user->phone_number, // Assuming the phone number field is `phone_number`
         ];
     }
 
@@ -94,13 +83,10 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     public function columnWidths(): array
     {
         return [
-            'A' => 15, // Transaction ID
-            'B' => 25, // Auction Name
-            'C' => 30, // Car Make & Model
-            'D' => 20, // User Name
-            'E' => 15, // Amount
-            'F' => 20, // Payment Status
-            'G' => 20, // Transaction Date
+            'A' => 10, // User ID
+            'B' => 25, // Name
+            'C' => 30, // Email
+            'D' => 20, // Phone Number
         ];
     }
 }

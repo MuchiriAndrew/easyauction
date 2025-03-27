@@ -55,9 +55,9 @@ class TransactionResource extends Resource
                 //comma separate the amount
                 Tables\Columns\TextColumn::make('amount')
                     // ->numeric()
-                    ->label('Amount')
+                    ->label('Amount (Ksh)')
                     ->formatStateUsing(function ($state) {
-                        return number_format($state);
+                        return number_format($state, 2);
                     }),
 
                 //fetch the auction name from the auction id
@@ -88,6 +88,22 @@ class TransactionResource extends Resource
                         'REFUNDED' => 'REFUNDED',
                     ])
                     ->label('Status'),
+
+
+                    // Date range filter for transaction_date
+            Tables\Filters\Filter::make('transaction_date')
+            ->form([
+                Forms\Components\DatePicker::make('from')->label('From Date'),
+                Forms\Components\DatePicker::make('to')->label('To Date'),
+            ])
+            ->query(function ($query, array $data) {
+                return $query
+                    ->when($data['from'], fn ($query) => $query->whereDate('transaction_date', '>=', $data['from']))
+                    ->when($data['to'], fn ($query) => $query->whereDate('transaction_date', '<=', $data['to']));
+            })
+            ->label('Transaction Date Range'),
+
+                   
             ])
             ->actions([
                 // Action::make('export')
@@ -99,9 +115,8 @@ class TransactionResource extends Resource
             ])
             ->bulkActions([
                 BulkAction::make('export')
-                    ->label('Export Selected')
+                    ->label('Download Transaction Report')
                     ->action(function ($records) {
-                        // Handle both Collection and array of IDs
                         $transactions = $records instanceof \Illuminate\Database\Eloquent\Collection
                             ? $records
                             : Transaction::whereIn('id', $records)->get();
@@ -109,7 +124,7 @@ class TransactionResource extends Resource
                         return Excel::download(new TransactionsExport($transactions), 'selected-transactions.xlsx');
                     })
                     ->icon('heroicon-o-download'),
-            ]);
+                ]);
     }
 
     // Override the `getEloquentQuery` method to modify the query

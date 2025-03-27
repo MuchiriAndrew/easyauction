@@ -235,7 +235,7 @@ class CarResource extends Resource
                 // Add a column to display the vendor id and link to the vendor profile
                 Tables\Columns\TextColumn::make('vendor_id')
                     ->label('Vendor')
-                    ->formatStateUsing(fn($record) => $record->vendor->name),
+                    ->formatStateUsing(fn($record) => $record->vendor->name ?? ''),
 
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')

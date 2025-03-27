@@ -65,73 +65,16 @@
                         margin: 50px !important;
                     } */
                 </style>
-                {{-- <div id="sidebar" class="col-md-3">
-                    <form action="/filter" method="POST" class="sidebar-content">
-                        @csrf
-                        <div class="head-side-bar">
-                            <h4>Filter Your Search</h4>
-                        </div>
-                        <div class="search-form">
-                            <div class="select">
-                                <select name="make" id="make">
-                                    <option value="-1">Select Makes</option>
-                                    <option {{ $make == 'Jeep' ? 'selected' : '' }}>Jeep</option>
-                                    <option {{ $make == 'Toyota' ? 'selected' : '' }}>Toyota</option>
-                                    <option {{ $make == 'Mazda' ? 'selected' : '' }}>Mazda</option>
-                                    <option {{ $make == 'Audi' ? 'selected' : '' }}>Audi</option>
-
-
-                                </select>
-                            </div>
-                            <div class="select">
-                                <select name="model" id="model">
-                                    <option value="-1">Select Car Model</option>
-                                    <option {{ $model == 'Axela' ? 'selected' : '' }}>Axela</option>
-                                    <option {{ $model == 'Atenza' ? 'selected' : '' }}>Atenza</option>
-                                    <option {{ $model == 'Wrangler' ? 'selected' : '' }}>Wrangler</option>
-                                    <option {{ $model == 'CX-5' ? 'selected' : '' }}>CX-5</option>
-                                    <option {{ $model == 'CX-3' ? 'selected' : '' }}>CX-3</option>
-                                </select>
-                            </div>
-                            <div class="select">
-                                <select name="style" id="style">
-
-                                    <option value="-1">Select Style</option>
-                                    <option {{ $style == 'Station Wagon' ? 'selected' : '' }}>Station Wagon</option>
-                                    <option {{ $style == 'Saloon' ? 'selected' : '' }}>Saloon</option>
-                                    <option {{ $style == 'SUV' ? 'selected' : '' }}>SUV</option>
-                                    <option {{ $style == 'Coupe' ? 'selected' : '' }}>Coupe</option>
-
-                                </select>
-                            </div>
-                          
-
-                            <div class="select">
-                                <select name="color" id="color">
-
-                                    <option value="-1">Select Color</option>
-                                    <option {{ $color == 'Black' ? 'selected' : '' }}>Black</option>
-                                    <option {{ $color == 'Red' ? 'selected' : '' }}>Red</option>
-                                    <option {{ $color == 'Blue' ? 'selected' : '' }}>Blue</option>
-                                    <option {{ $color == 'Silver' ? 'selected' : '' }}>Silver</option>
-
-                                </select>
-                            </div>
-                            <button type="submit" class="advanced-button">
-                                <a>Search Now<i class="fa fa-search"></i></a>
-
-                            </button>
-
-                        </div>
-                    </form>
-
-                </div> --}}
+                
             </div>
         </div>
     </section>
 
 
     {{-- @include('partials.cta-2') --}}
+
+
+    
 
 
 @endsection

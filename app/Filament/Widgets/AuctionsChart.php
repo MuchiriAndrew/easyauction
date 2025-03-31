@@ -99,7 +99,7 @@ class AuctionsChart extends BarChartWidget
                     [
                         'label' => 'Auctions sold in ' . now()->year,
                         'data' => $auctions,
-                        'backgroundColor' => '#54ffda',
+                        'backgroundColor' => '#64ffda',
                         'borderColor' => '#0000',
                     ],
                 ],

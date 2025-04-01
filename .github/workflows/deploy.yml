@@ -44,6 +44,11 @@ jobs:
         run: caprover login --server ${{ secrets.CAPROVER_SERVER }} --token ${{ secrets.APP_TOKEN }}
 
       # Step 8: Deploy the Docker image to CapRover
-      - name: Deploy to CapRover
-        run: |
-          caprover deploy --appName ${{ secrets.APP_NAME }} --imageName ${{ secrets.DOCKER_USERNAME }}/easyauction:${{ github.sha }} --noCache
+      - name: Deploy to CapRover Using GitHub Actions
+        uses: dankore/github-to-caprover@v1.0.9
+        with:
+          server: '${{ secrets.CAPROVER_SERVER }}'
+          password: '${{ secrets.CAPROVER_PASSWORD }}'
+          appName: '${{ secrets.CAPROVER_APP }}'
+          # image: 'username/my-docker-image-name:latest'
+          image: '${{ secrets.DOCKER_USERNAME }}/easyauction:${{ github.sha }}'

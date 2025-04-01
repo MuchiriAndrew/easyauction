@@ -22,15 +22,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 3: Build and tag the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/muchiriandrew/easyauction:${{ github.sha }} .
+      # # Step 3: Build and tag the Docker image
+      # - name: Build Docker image
+      #   run: |
+      #     docker build -t ghcr.io/muchiriandrew/easyauction:${{ github.sha }} .
 
-      # Step 4: Push the Docker image to GitHub Container Registry
-      - name: Push Docker image to GHCR
+      # # Step 4: Push the Docker image to GitHub Container Registry
+      # - name: Push Docker image to GHCR
+      #   run: |
+      #     docker push ghcr.io/muchiriandrew/easyauction:${{ github.sha }}
+
+      - name: Build and push Docker image
         run: |
-          docker push ghcr.io/muchiriandrew/easyauction:${{ github.sha }}
+          IMAGE_NAME=ghcr.io/muchiriandrew/easyauction
+          docker build -t $IMAGE_NAME:${{ github.sha }} .
+          docker push $IMAGE_NAME:${{ github.sha }}
 
       # Step 5: Install CapRover CLI
       - name: Install CapRover CLI

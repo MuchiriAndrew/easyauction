@@ -24,6 +24,14 @@ jobs:
       - name: Verify CapRover Installation
         run: caprover --version
 
+      - name: Show current directory and files
+        run: |
+          pwd
+          ls -la
+
+      - name: Create deployment archive
+        run: tar -cvf deploy.tar . --exclude='.git' --exclude='node_modules'
+
       - name: Deploy App to CapRover
         uses: caprover/deploy-from-github@v1.0.1
         with:

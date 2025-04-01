@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Trigger this action when you push to the main branch
+    paths:
+    - 'github-registry.yml'  # Runs only when this file is changed
 
 jobs:
   build-and-push-ghcr:
@@ -25,12 +27,12 @@ jobs:
       # Step 3: Build and tag the Docker image
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }} .
+          docker build -t ghcr.io/muchiriandrew/easyauction:${{ github.sha }} .
 
       # Step 4: Push the Docker image to GitHub Container Registry
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }}
+          docker push ghcr.io/muchiriandrew/easyauction:${{ github.sha }}
 
       # Step 5: Install CapRover CLI
       - name: Install CapRover CLI
@@ -45,4 +47,4 @@ jobs:
           password: '${{ secrets.CAPROVER_PASSWORD }}'
           appName: '${{ secrets.APP_NAME }}'
           # image: 'ghcr.io/mygithub-username/my-docker-image-name:my-label'
-          image: 'ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }}'
+          image: 'ghcr.io/muchiriandrew/easyauction:${{ github.sha }}'

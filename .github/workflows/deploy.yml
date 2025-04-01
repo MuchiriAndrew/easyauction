@@ -49,6 +49,6 @@ jobs:
         with:
           server: '${{ secrets.CAPROVER_SERVER }}'
           password: '${{ secrets.CAPROVER_PASSWORD }}'
-          appName: '${{ secrets.CAPROVER_APP }}'
+          appName: '${{ secrets.APP_NAME }}'
           # image: 'username/my-docker-image-name:latest'
           image: '${{ secrets.DOCKER_USERNAME }}/easyauction:${{ github.sha }}'

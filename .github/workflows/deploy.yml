@@ -24,9 +24,6 @@ jobs:
       - name: Verify CapRover Installation
         run: caprover --version
 
-      - name: Show Environment Variables
-        run: env | grep CAPROVER
-
       - name: Deploy to CapRover
         run: |
           caprover deploy \

@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main  # Trigger this action when you push to the main branch
-    paths:
-    - 'github-registry.yml'  # Runs only when this file is changed
 
 jobs:
   build-and-push-ghcr:

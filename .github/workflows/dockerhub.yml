@@ -3,10 +3,8 @@ name: Build, Push, and Deploy Laravel App to Docker Hub and CapRover
 on:
   push:
     branches:
-      - main  # Trigger this action when you push to the main branch
-    paths:
-    - 'dockerhub.yml'  # Runs only when this file is changed
-
+      - dockerhub  # Trigger this action when you push to the main branch
+      
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest  # Runs on an Ubuntu machine

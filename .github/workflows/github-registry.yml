@@ -1,0 +1,48 @@
+name: Build and Push to GitHub Container Registry (GHCR)
+
+on:
+  push:
+    branches:
+      - main  # Trigger this action when you push to the main branch
+
+jobs:
+  build-and-push-ghcr:
+    runs-on: ubuntu-latest  # Runs on an Ubuntu machine
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Log in to GitHub Container Registry (GHCR)
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 3: Build and tag the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }} .
+
+      # Step 4: Push the Docker image to GitHub Container Registry
+      - name: Push Docker image to GHCR
+        run: |
+          docker push ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }}
+
+      # Step 5: Install CapRover CLI
+      - name: Install CapRover CLI
+        run: npm install -g caprover
+
+
+      # Step 6: Deploy the Docker image from GHCR to CapRover
+      - name: Deploy to CapRover Using GitHub Actions
+        uses: dankore/github-to-caprover@v1.0.9
+        with:
+          server: '${{ secrets.CAPROVER_SERVER }}'
+          password: '${{ secrets.CAPROVER_PASSWORD }}'
+          appName: '${{ secrets.APP_NAME }}'
+          # image: 'ghcr.io/mygithub-username/my-docker-image-name:my-label'
+          image: 'ghcr.io/${{ github.actor }}/easyauction:${{ github.sha }}'

@@ -39,10 +39,6 @@ jobs:
       - name: Install CapRover CLI
         run: npm install -g caprover
 
-      # Step 7: Log in to CapRover using the provided credentials
-      # - name: Log in to CapRover
-      #   run: caprover login --server ${{ secrets.CAPROVER_SERVER }} --token ${{ secrets.APP_TOKEN }}
-
       # Step 8: Deploy the Docker image to CapRover
       - name: Deploy to CapRover Using GitHub Actions
         uses: dankore/github-to-caprover@v1.0.9

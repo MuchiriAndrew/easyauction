@@ -30,11 +30,12 @@ jobs:
           ls -la
 
       - name: Create deployment archive
-        run: tar -cvf deploy.tar . --exclude='.git' --exclude='node_modules'
+        run: tar --exclude='.git' --exclude='node_modules' -cvf deploy.tar .
 
       - name: Deploy App to CapRover
-        uses: caprover/deploy-from-github@v1.0.1
+        uses: dankore/github-to-caprover@v1.0.9
         with:
           server: '${{ secrets.CAPROVER_SERVER }}'
-          app: '${{ secrets.APP_NAME }}'
-          token: '${{ secrets.APP_TOKEN }}'
+          password: '${{ secrets.CAPROVER_PASSWORD }}'
+          appName: '${{ secrets.APP_NAME }}'
+          image: 'my-docker-image-name

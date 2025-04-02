@@ -39,7 +39,7 @@ jobs:
       - name: Install CapRover CLI
         run: npm install -g caprover
 
-      # Step 8: Deploy the Docker image to CapRover
+      # Step 8: Auto Deploy the Docker image to CapRover
       - name: Deploy to CapRover Using GitHub Actions
         uses: dankore/github-to-caprover@v1.0.9
         with:

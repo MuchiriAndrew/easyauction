@@ -22,16 +22,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # # Step 3: Build and tag the Docker image
-      # - name: Build Docker image
-      #   run: |
-      #     docker build -t ghcr.io/muchiriandrew/easyauction:${{ github.sha }} .
-
-      # # Step 4: Push the Docker image to GitHub Container Registry
-      # - name: Push Docker image to GHCR
-      #   run: |
-      #     docker push ghcr.io/muchiriandrew/easyauction:${{ github.sha }}
-
       - name: Build and push Docker image
         run: |
           IMAGE_NAME=ghcr.io/muchiriandrew/easyauction
